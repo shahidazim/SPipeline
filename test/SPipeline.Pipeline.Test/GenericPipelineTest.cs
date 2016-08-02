@@ -49,6 +49,8 @@ namespace SPipeline.Pipeline.Test
         public void Generic_Pipeline_Test()
         {
             var pipeline = new GenericPipeline<GenericPipelineRequest, GenericPipelineResponse>();
+            pipeline.AddSequential(
+                new GenericActionHandler<GenericPipelineRequest, GenericPipelineResponse>(req => new GenericActionRequest(), res => new GenericPipelineResponse()));
             var response = pipeline.Execute(new GenericPipelineRequest(false));
             Assert.IsInstanceOfType(response, typeof(GenericPipelineResponse));
         }
