@@ -7,11 +7,11 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
 
 **Pipeline** - The pipeline is the main execution block which execute connected action handlers in parallel and/or sequential form. 
 
-**Pipeline Parameters** - The request message is the initial parameter to the pipeline; and the response message is final result from pipeline, which could contain the final value or error messages.
+**Pipeline Parameters** - The request message is the initial parameter to the pipeline; and the response message is final result from pipeline, which could contain the final value and/or error messages.
 
 **Action Handler** - The action handler is the actual unit of code to be executed by the pipeline.
 
-**Action Handler Parameters** - The request is parameter to the action handler; and the response message is result from the action handler, which could contain the final value or error messages (similar to pipeline).
+**Action Handler Parameters** - The request is parameter to the action handler; and the response message is result from the action handler, which could contain the final value and/or error messages (similar to pipeline).
 
 **Translator** - The translator function is required to convert pipeline request message to action handler request, and action handler response to pipeline response message.
 
@@ -47,6 +47,7 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
 
         public override GenericActionResponse Execute(GenericActionRequest actionRequest)
         {
+            // Custom code
             return new GenericActionResponse();
         }
     }
@@ -71,4 +72,129 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
         new GenericActionHandler<GenericPipelineRequest, GenericPipelineResponse>(req => new GenericActionRequest(), res => new GenericPipelineResponse()));
 	// Execute pipeline
     var response = pipeline.Execute(new GenericPipelineRequest(false));
+
+
+## Example - Custom Pipeline with Multiple Action Handlers
+
+    // First Action Request
+    public class FirstActionRequest : ActionRequestBase
+    {
+    }
+
+    // First Action Response
+    public class FirstActionResponse : ActionResponseBase
+    {
+    }
+
+    // First Action Handler
+    public class FirstActionHandler
+        : ActionHandlerBase<FirstActionRequest, FirstActionResponse, CustomPipelineRequest, CustomPipelineResponse>
+    {
+        public FirstActionHandler()
+            : base(source => new FirstActionRequest(), source => new CustomPipelineResponse())
+        {
+        }
+
+        public override FirstActionResponse Execute(FirstActionRequest actionRequest)
+        {
+            // Custom code
+            return new FirstActionResponse();
+        }
+    }
+
+    // Second Action Request
+    public class SecondActionRequest : ActionRequestBase
+    {
+    }
+
+    // Second Action Response
+    public class SecondActionResponse : ActionResponseBase
+    {
+    }
+
+    // Second Action Handler
+    public class SecondActionHandler<TTranslateRequest, TTranslateResponse>
+        : ActionHandlerBase<SecondActionRequest, SecondActionResponse, TTranslateRequest, TTranslateResponse>
+        where TTranslateRequest : IMessageRequest
+        where TTranslateResponse : IMessageResponse
+    {
+        public SecondActionHandler(
+            Func<TTranslateRequest, SecondActionRequest> requestTranslator,
+            Func<SecondActionResponse, TTranslateResponse> responseTranslator)
+            : base(requestTranslator, responseTranslator)
+        {
+        }
+
+        public override SecondActionResponse Execute(SecondActionRequest actionRequest)
+        {
+            // Custom code
+            return new SecondActionResponse();
+        }
+    }
+
+
+    // Third Action Request
+    public class ThirdActionRequest : ActionRequestBase
+    {
+    }
+
+    // Third Action Response
+    public class ThirdActionResponse : ActionResponseBase
+    {
+    }
+
+    // Third Action Handler
+    public class ThirdActionHandler<TTranslateRequest, TTranslateResponse>
+        : ActionHandlerBase<ThirdActionRequest, ThirdActionResponse, TTranslateRequest, TTranslateResponse>
+        where TTranslateRequest : IMessageRequest
+        where TTranslateResponse : IMessageResponse
+    {
+        public ThirdActionHandler(
+            Func<TTranslateRequest, ThirdActionRequest> requestTranslator,
+            Func<ThirdActionResponse, TTranslateResponse> responseTranslator)
+            : base(requestTranslator, responseTranslator)
+        {
+        }
+
+        public override ThirdActionResponse Execute(ThirdActionRequest actionRequest)
+        {
+            // Custom code
+            return new ThirdActionResponse();
+        }
+    }
+
+    // Custom Pipeline Request
+    public class CustomPipelineRequest : MessageRequestBase
+    {
+        public CustomPipelineRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+        {
+        }
+    }
+
+    // Custom Pipeline Response
+    public class CustomPipelineResponse : MessageResponseBase
+    {
+    }
+
+    // Custom Pipeline
+    public class CustomPipeline : PipelineBase<CustomPipelineRequest, CustomPipelineResponse>
+    {
+        public CustomPipeline()
+        {
+            AddSequential(new FirstActionHandler());
+
+            AddParallel(
+                new SecondActionHandler<CustomPipelineRequest, CustomPipelineResponse>(
+                    source => new SecondActionRequest(),
+                    source => new CustomPipelineResponse()),
+                new ThirdActionHandler<CustomPipelineRequest, CustomPipelineResponse>(
+                    source => new ThirdActionRequest(),
+                    source => new CustomPipelineResponse()));
+
+			// Add custom initialization logic...
+        }
+    }
+
+    var pipeline = new CustomPipeline();
+	var response = pipeline.Execute(new CustomPipelineRequest(false));
 
