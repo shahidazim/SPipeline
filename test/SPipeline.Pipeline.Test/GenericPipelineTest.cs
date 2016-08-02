@@ -7,7 +7,6 @@ namespace SPipeline.Pipeline.Test
     [TestClass]
     public class GenericPipelineTest
     {
-
         public class GenericActionRequest : ActionRequestBase
         {
         }

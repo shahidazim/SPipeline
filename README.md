@@ -1,5 +1,6 @@
 # SPipeline
-SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
+
+SPipeline is .Net based pipeline solution with Sequential and Parallel handlers.
 
 ![](images/Pipeline.png)
 
@@ -14,6 +15,8 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
 **Action Handler Parameters** - The request is parameter to the action handler; and the response message is result from the action handler, which could contain the final value and/or error messages (similar to pipeline).
 
 **Translator** - The translator function is required to convert pipeline request message to action handler request, and action handler response to pipeline response message.
+
+**Message Dispatcher** - The message dispatcher is a utility class to register and execute pipeline based on the type of message.
 
 ## Pipeline Message Flow
 
@@ -198,3 +201,9 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
     var pipeline = new CustomPipeline();
 	var response = pipeline.Execute(new CustomPipelineRequest(false));
 
+
+## Example - Message Dispatcher
+
+    var messageDispatcher = new MessageDispatcher();
+    messageDispatcher.RegisterPipeline(new CustomPipeline());
+    var response = messageDispatcher.Execute(new CustomPipelineRequest(false));
