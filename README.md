@@ -3,6 +3,23 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel Handlers
 
 ![](images/Pipeline.png)
 
+## Key Concepts
+
+**Pipeline** - The pipeline is the main execution block which execute connected action handlers in parallel and/or sequential form. 
+
+**Pipeline Parameters** - The request message is the initial parameter to the pipeline; and the response message is final result from pipeline, which could contain the final value or error messages.
+
+**Action Handler** - The action handler is the actual unit of code to be executed by the pipeline.
+
+**Action Handler Parameters** - The request is parameter to the action handler; and the response message is result from the action handler, which could contain the final value or error messages (similar to pipeline).
+
+**Translator** - The translator function is required to convert pipeline request message to action handler request, and action handler response to pipeline response message.
+
+## Pipeline Message Flow
+
+![](images/PipelineMessageFlow.png)
+
+
 ## Example - Generic Pipeline
 
 	// Action Request
