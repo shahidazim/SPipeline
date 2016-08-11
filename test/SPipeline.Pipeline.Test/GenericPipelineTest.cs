@@ -1,9 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPipeline.Core.Interfaces;
-
-namespace SPipeline.Pipeline.Test
+﻿namespace SPipeline.Pipeline.Test
 {
+    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Models;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+
     [TestClass]
     public class GenericPipelineTest
     {
@@ -35,7 +36,7 @@ namespace SPipeline.Pipeline.Test
 
         public class GenericPipelineRequest : MessageRequestBase
         {
-            public GenericPipelineRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+            public GenericPipelineRequest(PipelineConfiguration configuration) : base(configuration)
             {
             }
         }
@@ -50,7 +51,7 @@ namespace SPipeline.Pipeline.Test
             var pipeline = new GenericPipeline<GenericPipelineRequest, GenericPipelineResponse>();
             pipeline.AddSequential(
                 new GenericActionHandler<GenericPipelineRequest, GenericPipelineResponse>(req => new GenericActionRequest(), res => new GenericPipelineResponse()));
-            var response = pipeline.Execute(new GenericPipelineRequest(false));
+            var response = pipeline.Execute(new GenericPipelineRequest(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false }));
             Assert.IsInstanceOfType(response, typeof(GenericPipelineResponse));
         }
     }

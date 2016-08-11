@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
+    using SPipeline.Core.Extensions;
     using SPipeline.Core.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -123,37 +124,49 @@
             // List of responses.
             var messageResponses = new List<TMessageResponse>();
 
-            // The list of tasks to run in parallel mode
-            var tasks = new List<Task>();
-            foreach (var actionHandler in actionHandlers)
+            var batchSizeForParallelHandlers = messageRequest.Configuration.BatchSizeForParallelHandlers;
+            // If batch size is zero then get the all handlers into a single batch
+            if (batchSizeForParallelHandlers == 0)
             {
-                var task = new Task(() =>
-                {
-                    // Translate the request and execute handler.
-                    var messageResponse = actionHandler.Execute((IActionRequest) actionHandler.TranslateRequest(messageRequest));
-                    // Translate the response.
-                    var translatedMessageResponse = (TMessageResponse) actionHandler.TranslateResponse(messageResponse);
-
-                    // Add responses synchronously
-                    lock (lockObject)
-                    {
-                        messageResponses.Add(translatedMessageResponse);
-                    }
-
-                    if (messageResponse.HasError)
-                    {
-                        // TODO: Implement error handling
-                    }
-
-                    // Clear the errors based on the messsage configuration.
-                    translatedMessageResponse.ClearErrors(messageRequest.ClearErrorsBeforeNextHandler);
-                });
-                // Start the task and add to tasks collection
-                task.Start();
-                tasks.Add(task);
+                batchSizeForParallelHandlers = actionHandlers.Count();
             }
-            // Wait for all tasks to be completed.
-            Task.WhenAll(tasks).Wait();
+
+            var batchedParallelHandlers = actionHandlers.Batch(batchSizeForParallelHandlers);
+
+            foreach (var batchedParallelHandler in batchedParallelHandlers)
+            {
+                // The list of tasks to run in parallel mode
+                var tasks = new List<Task>();
+                foreach (var actionHandler in batchedParallelHandler)
+                {
+                    var task = new Task(() =>
+                    {
+                        // Translate the request and execute handler.
+                        var messageResponse = actionHandler.Execute((IActionRequest) actionHandler.TranslateRequest(messageRequest));
+                        // Translate the response.
+                        var translatedMessageResponse = (TMessageResponse) actionHandler.TranslateResponse(messageResponse);
+
+                        // Add responses synchronously
+                        lock (lockObject)
+                        {
+                            messageResponses.Add(translatedMessageResponse);
+                        }
+
+                        if (messageResponse.HasError)
+                        {
+                            // TODO: Implement error handling
+                        }
+
+                        // Clear the errors based on the messsage configuration.
+                        translatedMessageResponse.ClearErrors(messageRequest.Configuration.ClearErrorsBeforeNextHandler);
+                    });
+                    // Start the task and add to tasks collection
+                    task.Start();
+                    tasks.Add(task);
+                }
+                // Wait for all tasks to be completed.
+                Task.WhenAll(tasks).Wait();
+            }
 
             return messageResponses.AsEnumerable();
         }

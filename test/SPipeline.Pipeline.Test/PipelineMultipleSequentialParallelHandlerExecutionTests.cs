@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Pipeline.Test.Pipeline
+﻿using SPipeline.Core.Models;
+
+namespace SPipeline.Pipeline.Test.Pipeline
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,7 +38,7 @@
 
         public class MultiHandlersRequest : MessageRequestBase
         {
-            public MultiHandlersRequest() : base(false)
+            public MultiHandlersRequest(PipelineConfiguration configuration) : base(configuration)
             {
             }
         }
@@ -60,7 +62,7 @@
         public void Pipeline_MultiHandlers_Handlers_ResponseTypeIsValid()
         {
             var pipeline = new MultiHandlersPipeline();
-            var response = pipeline.Execute(new MultiHandlersRequest());
+            var response = pipeline.Execute(new MultiHandlersRequest(new PipelineConfiguration {ClearErrorsBeforeNextHandler = false}));
             Assert.IsInstanceOfType(response, typeof(MultiHandlersResponse));
             Assert.AreEqual(_count, 10);
         }

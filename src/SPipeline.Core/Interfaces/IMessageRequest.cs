@@ -1,5 +1,7 @@
 ﻿namespace SPipeline.Core.Interfaces
 {
+    using SPipeline.Core.Models;
+
     /// <summary>
     /// Represents the message request.
     /// </summary>
@@ -7,11 +9,11 @@
     public interface IMessageRequest : ITranslatable
     {
         /// <summary>
-        /// Gets a value indicating whether to clear errors before next handler execution.
+        /// Gets the pipeline configuration.
         /// </summary>
         /// <value>
-        /// <c>true</c> if clear errors before next handler execution; otherwise, <c>false</c>.
+        /// The pipeline configuration.
         /// </value>
-        bool ClearErrorsBeforeNextHandler { get; }
+        PipelineConfiguration Configuration { get; }
     }
 }

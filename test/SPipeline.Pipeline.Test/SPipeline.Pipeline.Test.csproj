@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LinqExtensionsTest.cs" />
     <Compile Include="MessageDispatcherTests.cs" />
     <Compile Include="PipelineManyHandlersTests.cs" />
     <Compile Include="PipelineMultipleSequentialParallelHandlerExecutionTests.cs" />

@@ -1,18 +1,20 @@
-﻿namespace SPipeline.Pipeline.Test
+﻿using SPipeline.Core.Models;
+
+namespace SPipeline.Pipeline.Test
 {
     using SPipeline.Core.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     class DummyMessage1 : MessageRequestBase
     {
-        public DummyMessage1() : base(true)
+        public DummyMessage1() : base(new PipelineConfiguration { ClearErrorsBeforeNextHandler = true })
         {
         }
     }
 
     class DummyMessage2 : MessageRequestBase
     {
-        public DummyMessage2() : base(true)
+        public DummyMessage2() : base(new PipelineConfiguration { ClearErrorsBeforeNextHandler = true })
         {
         }
     }

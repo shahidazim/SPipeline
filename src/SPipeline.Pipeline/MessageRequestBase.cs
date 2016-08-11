@@ -1,6 +1,7 @@
 ﻿namespace SPipeline.Pipeline
 {
     using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Models;
 
     /// <summary>
     /// The base implementation for message request.
@@ -9,20 +10,20 @@
     public abstract class MessageRequestBase : IMessageRequest
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageRequestBase"/> class.
+        /// Initializes a new instance of the <see cref="MessageRequestBase" /> class.
         /// </summary>
-        /// <param name="clearErrorsBeforeNextHandler">if set to <c>true</c> [clear errors before next handler].</param>
-        protected MessageRequestBase(bool clearErrorsBeforeNextHandler)
+        /// <param name="configuration">The pipeline configuration.</param>
+        protected MessageRequestBase(PipelineConfiguration configuration)
         {
-            ClearErrorsBeforeNextHandler = clearErrorsBeforeNextHandler;
+            Configuration = configuration;
         }
 
         /// <summary>
-        /// Gets a value indicating whether to clear errors before next handler execution.
+        /// Gets the pipeline configuration.
         /// </summary>
         /// <value>
-        /// <c>true</c> if clear errors before next handler execution; otherwise, <c>false</c>.
+        /// The pipeline configuration.
         /// </value>
-        public bool ClearErrorsBeforeNextHandler { get; }
+        public PipelineConfiguration Configuration { get; }
     }
 }

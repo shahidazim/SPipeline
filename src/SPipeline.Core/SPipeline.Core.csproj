@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\PipelineNotRegisteredException.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Interfaces\IActionHandler.cs" />
     <Compile Include="Interfaces\IActionRequest.cs" />
     <Compile Include="Interfaces\IActionResponse.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Interfaces\ITranslatable.cs" />
     <Compile Include="Models\MessageError.cs" />
+    <Compile Include="Models\PipelineConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

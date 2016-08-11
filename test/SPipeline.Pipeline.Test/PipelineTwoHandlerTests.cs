@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Pipeline.Test.Pipeline
+﻿using SPipeline.Core.Models;
+
+namespace SPipeline.Pipeline.Test.Pipeline
 {
     using SPipeline.Core.Interfaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,7 +63,7 @@
 
         public class TwoHandlersSequentialRequest : MessageRequestBase
         {
-            public TwoHandlersSequentialRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+            public TwoHandlersSequentialRequest(PipelineConfiguration configuration) : base(configuration)
             {
             }
         }
@@ -88,7 +90,7 @@
         public void Pipeline_Sequential_Two_Handlers_ResponseTypeIsValid()
         {
             var pipeline = new TwoHandlersSequentialPipeline();
-            var response = pipeline.Execute(new TwoHandlersSequentialRequest(false));
+            var response = pipeline.Execute(new TwoHandlersSequentialRequest(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false }));
             Assert.IsInstanceOfType(response, typeof(TwoHandlersSequentialResponse));
         }
     }

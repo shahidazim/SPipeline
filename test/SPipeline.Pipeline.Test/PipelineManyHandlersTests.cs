@@ -1,6 +1,7 @@
 ﻿namespace SPipeline.Pipeline.Test.Pipeline
 {
-    using Core.Interfaces;
+    using SPipeline.Core.Models;
+    using SPipeline.Core.Interfaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Threading;
@@ -43,37 +44,36 @@
             }
         }
 
-        public class MultipleHandlersSequentialRequest : MessageRequestBase
+        public class MultipleHandlersParallelRequest : MessageRequestBase
         {
-            public MultipleHandlersSequentialRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+            public MultipleHandlersParallelRequest(PipelineConfiguration configuration) : base(configuration)
             {
             }
         }
 
-        public class MultipleHandlersSequentialResponse : MessageResponseBase
+        public class MultipleHandlersParallelResponse : MessageResponseBase
         {
         }
 
-        public class MultipleHandlersSequentialPipeline : PipelineBase<MultipleHandlersSequentialRequest, MultipleHandlersSequentialResponse>
+        public class MultipleHandlersParallelPipeline : PipelineBase<MultipleHandlersParallelRequest, MultipleHandlersParallelResponse>
         {
-            public MultipleHandlersSequentialPipeline()
+            public MultipleHandlersParallelPipeline()
             {
-                var actionHandlers = new FirstActionHandler<MultipleHandlersSequentialRequest, MultipleHandlersSequentialResponse>[LoopCount];
+                var actionHandlers = new FirstActionHandler<MultipleHandlersParallelRequest, MultipleHandlersParallelResponse>[LoopCount];
                 for (var i = 0; i < LoopCount; i++)
                 {
-                    actionHandlers[i] = new FirstActionHandler<MultipleHandlersSequentialRequest, MultipleHandlersSequentialResponse>(source => new FirstActionRequest(), source => new MultipleHandlersSequentialResponse());
+                    actionHandlers[i] = new FirstActionHandler<MultipleHandlersParallelRequest, MultipleHandlersParallelResponse>(source => new FirstActionRequest(), source => new MultipleHandlersParallelResponse());
                 }
                 AddParallel(actionHandlers);
-                //AddSequential(actionHandlers);
             }
         }
 
         [TestMethod]
-        public void Pipeline_Sequential_Two_Handlers_ResponseTypeIsValid()
+        public void Pipeline_Parallel_Handlers_ResponseTypeIsValid()
         {
-            var pipeline = new MultipleHandlersSequentialPipeline();
-            var response = pipeline.Execute(new MultipleHandlersSequentialRequest(false));
-            Assert.IsInstanceOfType(response, typeof(MultipleHandlersSequentialResponse));
+            var pipeline = new MultipleHandlersParallelPipeline();
+            var response = pipeline.Execute(new MultipleHandlersParallelRequest(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false, BatchSizeForParallelHandlers = 100 }));
+            Assert.IsInstanceOfType(response, typeof(MultipleHandlersParallelResponse));
             Assert.AreEqual(LoopCount * 1, _count);
         }
     }

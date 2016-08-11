@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Pipeline.Test.Pipeline
+﻿using SPipeline.Core.Models;
+
+namespace SPipeline.Pipeline.Test.Pipeline
 {
     using Core.Interfaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -89,7 +91,7 @@
 
         public class ThreeHandlersSequentialRequest : MessageRequestBase
         {
-            public ThreeHandlersSequentialRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+            public ThreeHandlersSequentialRequest(PipelineConfiguration configuration) : base(configuration)
             {
             }
         }
@@ -118,7 +120,7 @@
         public void Pipeline_Sequential_Three_Handlers_ResponseTypeIsValid()
         {
             var pipeline = new ThreeHandlersSequentialPipeline();
-            var response = pipeline.Execute(new ThreeHandlersSequentialRequest(false));
+            var response = pipeline.Execute(new ThreeHandlersSequentialRequest(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false }));
             Assert.IsInstanceOfType(response, typeof(ThreeHandlersSequentialResponse));
             Assert.AreEqual(_count, 3);
         }
