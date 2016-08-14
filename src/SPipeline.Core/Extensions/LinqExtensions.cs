@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Core.Extensions
+﻿using System;
+
+namespace SPipeline.Core.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -17,8 +19,11 @@
         /// <returns></returns>
         public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> source, int batchSize)
         {
-            return source.Select((s, i) => new { Value = s, Index = i })
-                         .GroupBy(item => item.Index / batchSize, item => item.Value);
+            var chunkCount = Math.Ceiling((decimal)source.Count() / batchSize);
+            for (var i = 0; i < chunkCount; i++)
+            {
+                yield return source.Skip(i * batchSize).Take(batchSize);
+            }
         }
     }
 }

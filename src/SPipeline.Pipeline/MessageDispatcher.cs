@@ -19,7 +19,7 @@
         /// </summary>
         /// <param name="pipeline">The pipeline.</param>
         /// <returns></returns>
-        public MessageDispatcher RegisterPipeline(IPipeline pipeline)
+        public IMessageDispatcher RegisterPipeline(IPipeline pipeline)
         {
             _pipelines.Add(pipeline.MessageType, pipeline);
             return this;
