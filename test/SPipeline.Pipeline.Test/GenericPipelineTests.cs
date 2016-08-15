@@ -1,12 +1,12 @@
 ﻿namespace SPipeline.Pipeline.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Models;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
 
     [TestClass]
-    public class GenericPipelineTest
+    public class GenericPipelineTests
     {
         public class GenericActionRequest : ActionRequestBase
         {

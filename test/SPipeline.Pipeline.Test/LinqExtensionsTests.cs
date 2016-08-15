@@ -5,7 +5,7 @@
     using System.Linq;
 
     [TestClass]
-    public class LinqExtensionsTest
+    public class LinqExtensionsTests
     {
         [TestMethod]
         public void LinqExtensions_Batch_GenerateListWith1000Items_SplitWith100_ShouldHave10Batches()

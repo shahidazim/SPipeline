@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleQueueServiceBase.cs" />
+    <Compile Include="SimpleQueueServiceSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,9 +1,8 @@
-﻿using SPipeline.Core.Models;
-
-namespace SPipeline.Pipeline.Test
+﻿namespace SPipeline.Pipeline.Test
 {
-    using SPipeline.Core.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using SPipeline.Core.Exceptions;
+    using SPipeline.Core.Models;
 
     class DummyMessage1 : MessageRequestBase
     {

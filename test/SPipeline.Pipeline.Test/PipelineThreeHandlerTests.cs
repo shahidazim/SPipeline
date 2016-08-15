@@ -1,9 +1,8 @@
-﻿using SPipeline.Core.Models;
-
-namespace SPipeline.Pipeline.Test.Pipeline
+﻿namespace SPipeline.Pipeline.Test
 {
-    using Core.Interfaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Models;
     using System;
 
     [TestClass]

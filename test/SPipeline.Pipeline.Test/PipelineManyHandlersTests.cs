@@ -1,8 +1,8 @@
-﻿namespace SPipeline.Pipeline.Test.Pipeline
+﻿namespace SPipeline.Pipeline.Test
 {
-    using SPipeline.Core.Models;
-    using SPipeline.Core.Interfaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Models;
     using System;
     using System.Threading;
 
@@ -11,7 +11,7 @@
     {
         private static int _count;
         private const int LoopCount = 1000;
-        private static readonly object lockObject = new object();
+        private static readonly object LockObject = new object();
 
         public class FirstActionRequest : ActionRequestBase
         {
@@ -35,7 +35,7 @@
 
             public override FirstActionResponse Execute(FirstActionRequest actionRequest)
             {
-                lock (lockObject)
+                lock (LockObject)
                 {
                     _count++;
                 }

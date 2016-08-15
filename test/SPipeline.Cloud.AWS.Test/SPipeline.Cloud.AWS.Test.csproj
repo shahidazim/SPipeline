@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B4EA2029-EABC-4DC2-8EA0-F66ACCD0CAB6}</ProjectGuid>
+    <ProjectGuid>{94A9C1C1-A6A7-415B-BED8-2B43DDE47FCB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPipeline.Pipeline.Test</RootNamespace>
-    <AssemblyName>SPipeline.Pipeline.Test</AssemblyName>
+    <RootNamespace>SPipeline.Cloud.AWS.Test</RootNamespace>
+    <AssemblyName>SPipeline.Cloud.AWS.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -45,23 +46,19 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="LinqExtensionsTests.cs" />
-    <Compile Include="MessageDispatcherTests.cs" />
-    <Compile Include="PipelineManyHandlersTests.cs" />
-    <Compile Include="PipelineMultipleSequentialParallelHandlerExecutionTests.cs" />
-    <Compile Include="PipelineThreeHandlerTests.cs" />
-    <Compile Include="PipelineTwoHandlerTests.cs" />
+    <Compile Include="AWSSimpleQueueServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GenericPipelineTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SPipeline.Cloud.AWS\SPipeline.Cloud.AWS.csproj">
+      <Project>{18a9f6ef-d41d-4256-a5f8-c585f84133c6}</Project>
+      <Name>SPipeline.Cloud.AWS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\SPipeline.Core\SPipeline.Core.csproj">
       <Project>{8ecf58f2-2e96-4103-a519-605ee70d5423}</Project>
       <Name>SPipeline.Core</Name>

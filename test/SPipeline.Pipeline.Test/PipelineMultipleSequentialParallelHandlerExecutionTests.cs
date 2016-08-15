@@ -1,14 +1,13 @@
-﻿using SPipeline.Core.Models;
-
-namespace SPipeline.Pipeline.Test.Pipeline
+﻿namespace SPipeline.Pipeline.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using SPipeline.Core.Models;
 
     [TestClass]
     public class PipelineMultipleSequentialParallelHandlerExecutionTests
     {
         private static int _count;
-        private static readonly object lockObject = new object();
+        private static readonly object LockObject = new object();
 
         public class FirstActionRequest : ActionRequestBase
         {
@@ -28,7 +27,7 @@ namespace SPipeline.Pipeline.Test.Pipeline
 
             public override FirstActionResponse Execute(FirstActionRequest actionRequest)
             {
-                lock (lockObject)
+                lock (LockObject)
                 {
                     _count++;
                 }
