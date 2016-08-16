@@ -13,6 +13,8 @@
             public MyMessage(PipelineConfiguration configuration) : base(configuration)
             {
             }
+
+            public string Name { get; set; }
         }
 
         public class MyConfiguration
@@ -20,14 +22,21 @@
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Integration"), TestCategory("SQS")]
         public void AWSSimpleQueueService_SendMessage()
         {
-            var message = new MyMessage(new PipelineConfiguration
+            var message = new MyMessage(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false })
             {
-                ClearErrorsBeforeNextHandler = false
+                Name = "Hello World!"
+            };
+            var sender = new SimpleQueueServiceSender(new SimpleQueueServiceSenderConfiguration
+            {
+                ServiceUrl = "<service-url>",
+                AccountId = "<account-id>",
+                QueueName = "<queue-name>",
+                AccessKey = "<access-key>",
+                SecretKey = "<secret-key>"
             });
-            var sender = new SimpleQueueServiceSender();
             sender.Send(message);
         }
     }
