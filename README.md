@@ -58,7 +58,11 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel handlers.
 	// Pipeline Request
     public class GenericPipelineRequest : MessageRequestBase
     {
-        public GenericPipelineRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+        public GenericPipelineRequest(bool clearErrorsBeforeNextHandler)
+			: base(new PipelineConfiguration
+		            {
+		                ClearErrorsBeforeNextHandler = clearErrorsBeforeNextHandler
+		            })
         {
         }
     }
@@ -169,7 +173,11 @@ SPipeline is .Net based pipeline solution with Sequential and Parallel handlers.
     // Custom Pipeline Request
     public class CustomPipelineRequest : MessageRequestBase
     {
-        public CustomPipelineRequest(bool clearErrorsBeforeNextHandler) : base(clearErrorsBeforeNextHandler)
+        public CustomPipelineRequest(bool clearErrorsBeforeNextHandler)
+			: base(new PipelineConfiguration
+		            {
+		                ClearErrorsBeforeNextHandler = clearErrorsBeforeNextHandler
+		            })
         {
         }
     }
