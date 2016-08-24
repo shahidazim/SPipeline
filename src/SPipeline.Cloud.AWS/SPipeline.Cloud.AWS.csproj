@@ -54,8 +54,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleQueueServiceBase.cs" />
+    <Compile Include="SimpleQueueServiceReceiver.cs" />
     <Compile Include="SimpleQueueServiceSender.cs" />
-    <Compile Include="SimpleQueueServiceSenderConfiguration.cs" />
+    <Compile Include="SimpleQueueServiceConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

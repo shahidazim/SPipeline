@@ -1,9 +1,9 @@
 ﻿namespace SPipeline.Cloud.Azure
 {
     using Microsoft.ServiceBus.Messaging;
-    using SPipeline.Core.Constants;
     using SPipeline.Core.Interfaces;
-    using System.Xml;
+    using SPipeline.Core.Models;
+    using System;
 
     /// <summary>
     /// The Azure Service Bus Sender wrapper to send messages
@@ -24,24 +24,15 @@
         /// <summary>
         /// Sends the specified message.
         /// </summary>
+        /// <typeparam name="TMessageResponse">The type of the message response.</typeparam>
         /// <param name="message">The message.</param>
-        public void Send(IMessageRequest message)
+        /// <returns></returns>
+        public IMessageResponse Send<TMessageResponse>(IMessageRequest message)
+            where TMessageResponse : IMessageResponse, new()
         {
-            Send(new BrokeredMessage(message)
+            return Send<TMessageResponse>(new BrokeredMessage(message)
             {
                 ContentType = message.GetType().AssemblyQualifiedName
-            });
-        }
-
-        /// <summary>
-        /// Sends the specified XML message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public void Send(XmlDocument message)
-        {
-            Send(new BrokeredMessage(message)
-            {
-                ContentType = MessageConstants.XmlContentType
             });
         }
 
@@ -49,9 +40,21 @@
         /// Sends the specified brokered message.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        private void Send(BrokeredMessage brokeredMessage)
+        /// <returns></returns>
+        private IMessageResponse Send<TMessageResponse>(BrokeredMessage brokeredMessage)
+            where TMessageResponse : IMessageResponse, new()
         {
-            QueueClient.Send(brokeredMessage);
+            var response = new TMessageResponse();
+            try
+            {
+                QueueClient.Send(brokeredMessage);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(new MessageError(ex, false));
+            }
+
+            return response;
         }
     }
 }

@@ -4,7 +4,6 @@
     using System.IO;
     using System.Runtime.Serialization;
     using System.Xml;
-    using System.Xml.Linq;
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
 
@@ -60,7 +59,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <returns></returns>
-        public T GetBody<T>(BrokeredMessage brokeredMessage)
+        protected T GetBody<T>(BrokeredMessage brokeredMessage)
         {
             var bodyType = Type.GetType(brokeredMessage.ContentType, true);
             var stream = brokeredMessage.GetBody<Stream>();
@@ -68,21 +67,6 @@
             var reader = XmlDictionaryReader.CreateBinaryReader(stream, XmlDictionaryReaderQuotas.Max);
             var deserializedBody = serializer.ReadObject(reader);
             return (T)deserializedBody;
-        }
-
-        /// <summary>
-        /// Deserialized the XML message from brokdered message.
-        /// </summary>
-        /// <param name="brokeredMessage">The brokered message.</param>
-        /// <returns></returns>
-        public XDocument GetXmlBody(BrokeredMessage brokeredMessage)
-        {
-            var stream = brokeredMessage.GetBody<Stream>();
-
-            using (var streamReader = new StreamReader(stream, true))
-            {
-                return XDocument.Load(streamReader);
-            }
         }
 
         /// <summary>

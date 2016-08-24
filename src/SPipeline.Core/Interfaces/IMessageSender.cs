@@ -1,7 +1,5 @@
 ﻿namespace SPipeline.Core.Interfaces
 {
-    using System.Xml;
-
     /// <summary>
     /// Represents the message sender
     /// </summary>
@@ -10,13 +8,10 @@
         /// <summary>
         /// Sends the specified message.
         /// </summary>
+        /// <typeparam name="TMessageResponse">The type of the message response.</typeparam>
         /// <param name="message">The message.</param>
-        void Send(IMessageRequest message);
-
-        /// <summary>
-        /// Sends the specified XML message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        void Send(XmlDocument message);
+        /// <returns></returns>
+        IMessageResponse Send<TMessageResponse>(IMessageRequest message)
+            where TMessageResponse : IMessageResponse, new();
     }
 }
