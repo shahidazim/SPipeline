@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace SPipeline.Core.Extensions
+﻿namespace SPipeline.Core.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 

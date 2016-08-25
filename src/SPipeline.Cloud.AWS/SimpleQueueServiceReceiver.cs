@@ -15,7 +15,7 @@
         private bool _isRunning;
 
         public SimpleQueueServiceReceiver(SimpleQueueServiceConfiguration configuration, IMessageDispatcher messageDispatcher)
-        : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
@@ -47,13 +47,13 @@
             {
                 while (IsRunning)
                 {
-                    var queueUrl = CreateQueueUrl();
-                    var receiveMessageResponse = QueueClient.ReceiveMessage(
-                        new ReceiveMessageRequest
-                        {
-                            QueueUrl = queueUrl,
-                            MaxNumberOfMessages = _configuration.MaxNumberOfMessages
-                        });
+                    var queueUrl = QueryUrlBuilder.Create(ServiceUrl, AccountId, QueueName);
+                    var receiveMessageRequest = new ReceiveMessageRequest
+                    {
+                        QueueUrl = queueUrl,
+                        MaxNumberOfMessages = _configuration.MaxNumberOfMessages
+                    };
+                    var receiveMessageResponse = QueueClient.ReceiveMessage(receiveMessageRequest);
                     foreach (var message in receiveMessageResponse.Messages)
                     {
                         var response = _messageDispatcher.Execute((IMessageRequest)SerializerJson.Deserialize(message.Body));

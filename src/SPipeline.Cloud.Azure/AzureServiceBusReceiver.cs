@@ -29,7 +29,7 @@
         /// </summary>
         public void Start()
         {
-            QueueClient.OnMessage((receivedMessage) =>
+            QueueClient.OnMessage(receivedMessage =>
             {
                 try
                 {

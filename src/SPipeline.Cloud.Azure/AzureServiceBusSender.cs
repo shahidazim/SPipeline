@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public AzureServiceBusSender(AzureServiceBusSenderConfiguration configuration)
-        : base(configuration.ConnectionString, configuration.QueueName, configuration.MessageTimeToLive, configuration.MaxSizeInMegabytes)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.MessageTimeToLive, configuration.MaxSizeInMegabytes)
         {
         }
 

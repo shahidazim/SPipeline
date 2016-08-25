@@ -7,7 +7,7 @@
     using SPipeline.Pipeline;
 
     [TestClass]
-    public class AWSSimpleQueueServiceTest
+    public class AWSSimpleQueueServiceTests
     {
         public class MyMessageRequest : MessageRequestBase
         {

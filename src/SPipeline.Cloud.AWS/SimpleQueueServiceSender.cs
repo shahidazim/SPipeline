@@ -12,7 +12,7 @@
         private const string ContentType = "ContentType";
 
         public SimpleQueueServiceSender(SimpleQueueServiceConfiguration configuration)
-        : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
         {
         }
 
@@ -22,11 +22,13 @@
             var response = new TMessageResponse();
             try
             {
-                var sqsResponse = QueueClient.SendMessage(new SendMessageRequest
+                var sendMessageRequest = new SendMessageRequest
                 {
                     MessageBody = SerializerJson.Serialize(message),
-                    QueueUrl = CreateQueueUrl()
-                });
+                    QueueUrl = QueryUrlBuilder.Create(ServiceUrl, AccountId, QueueName)
+                };
+
+                var sqsResponse = QueueClient.SendMessage(sendMessageRequest);
 
                 if (sqsResponse.HttpStatusCode != HttpStatusCode.OK)
                 {

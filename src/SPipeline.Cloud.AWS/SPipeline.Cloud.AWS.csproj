@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryUrlBuilder.cs" />
     <Compile Include="SimpleQueueServiceBase.cs" />
     <Compile Include="SimpleQueueServiceReceiver.cs" />
     <Compile Include="SimpleQueueServiceSender.cs" />
