@@ -1,11 +1,8 @@
 ﻿namespace SPipeline.Cloud.Azure
 {
-    using System;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Xml;
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
+    using System;
 
     /// <summary>
     /// The base implementation for Azure Service Bus wapper
@@ -51,22 +48,6 @@
         {
             CreateQueue(connectionString, queueName);
             QueueClient = QueueClient.CreateFromConnectionString(connectionString, queueName);
-        }
-
-        /// <summary>
-        /// Deserialized the message body from brokered message.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="brokeredMessage">The brokered message.</param>
-        /// <returns></returns>
-        protected T GetBody<T>(BrokeredMessage brokeredMessage)
-        {
-            var bodyType = Type.GetType(brokeredMessage.ContentType, true);
-            var stream = brokeredMessage.GetBody<Stream>();
-            var serializer = new DataContractSerializer(bodyType);
-            var reader = XmlDictionaryReader.CreateBinaryReader(stream, XmlDictionaryReaderQuotas.Max);
-            var deserializedBody = serializer.ReadObject(reader);
-            return (T)deserializedBody;
         }
 
         /// <summary>

@@ -7,14 +7,14 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class SimpleQueueServiceReceiver<T> : SimpleQueueServiceBase, IMessageReceiver
+    public class SimpleQueueServiceReceiver : SimpleQueueServiceBase, IMessageReceiver
     {
-        private readonly SimpleQueueServiceConfiguration _configuration;
+        private readonly SimpleQueueServiceReceiveConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly object _lockObject = new object();
         private bool _isRunning;
 
-        public SimpleQueueServiceReceiver(SimpleQueueServiceConfiguration configuration, IMessageDispatcher messageDispatcher)
+        public SimpleQueueServiceReceiver(SimpleQueueServiceReceiveConfiguration configuration, IMessageDispatcher messageDispatcher)
             : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
         {
             _configuration = configuration;
@@ -53,23 +53,33 @@
                         QueueUrl = queueUrl,
                         MaxNumberOfMessages = _configuration.MaxNumberOfMessages
                     };
-                    var receiveMessageResponse = QueueClient.ReceiveMessage(receiveMessageRequest);
-                    foreach (var message in receiveMessageResponse.Messages)
+                    while (true)
                     {
-                        var response = _messageDispatcher.Execute((IMessageRequest)SerializerJson.Deserialize(message.Body));
+                        var receiveMessageResponse = QueueClient.ReceiveMessageAsync(receiveMessageRequest).Result;
 
-                        if (response.CanContinue)
+                        if (receiveMessageResponse.Messages.Count == 0)
                         {
-                            var deleteMessageResponse = QueueClient.DeleteMessage(new DeleteMessageRequest(queueUrl, message.ReceiptHandle));
-                            if (deleteMessageResponse.HttpStatusCode != HttpStatusCode.OK)
+                            break;
+                        }
+
+                        foreach (var message in receiveMessageResponse.Messages)
+                        {
+                            var response = _messageDispatcher.Execute((IMessageRequest)SerializerJson.Deserialize(message.Body));
+
+                            if (response.CanContinue)
+                            {
+                                var deleteMessageResponse =
+                                    QueueClient.DeleteMessage(new DeleteMessageRequest(queueUrl, message.ReceiptHandle));
+                                if (deleteMessageResponse.HttpStatusCode != HttpStatusCode.OK)
+                                {
+                                    // TODO: Implement error handling
+                                }
+                            }
+
+                            if (response.HasError)
                             {
                                 // TODO: Implement error handling
                             }
-                        }
-
-                        if (response.HasError)
-                        {
-                            // TODO: Implement error handling
                         }
                     }
                     Thread.Sleep(_configuration.MessageReceiveThreadTimeoutMilliseconds);

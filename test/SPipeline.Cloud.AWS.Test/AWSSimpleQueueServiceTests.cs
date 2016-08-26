@@ -29,7 +29,7 @@
         [TestMethod]
         [Ignore]
         [TestCategory("Integration"), TestCategory("SQS")]
-        public void AWSSimpleQueueService_SendMessage()
+        public void AWSSimpleQueueService_SendAndReceiveMessages()
         {
             var message = new MyMessageRequest(new PipelineConfiguration
             {
@@ -42,24 +42,41 @@
 
             var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
 
-            var simpleQueueServiceConfiguration
-                = new SimpleQueueServiceConfiguration
+            var serviceUrl = "<service-url>";
+            var accountId = "<account-id>";
+            var queueName = "<queue-name>";
+            var accessKey = "<access-key>";
+            var secretKey = "<secret-key>";
+
+
+            var simpleQueueServiceSendConfiguration
+                = new SimpleQueueServiceSendConfiguration
                 {
-                    ServiceUrl = "<service-url>",
-                    AccountId = "<account-id>",
-                    QueueName = "<queue-name>",
-                    AccessKey = "<access-key>",
-                    SecretKey = "<secret-key>",
+                    ServiceUrl = serviceUrl,
+                    AccountId = accountId,
+                    QueueName = queueName,
+                    AccessKey = accessKey,
+                    SecretKey = secretKey
+                };
+
+            var simpleQueueServiceReceiveConfiguration
+                = new SimpleQueueServiceReceiveConfiguration
+                {
+                    ServiceUrl = serviceUrl,
+                    AccountId = accountId,
+                    QueueName = queueName,
+                    AccessKey = accessKey,
+                    SecretKey = secretKey,
                     MessageReceiveThreadTimeoutMilliseconds = 1000,
                     MaxNumberOfMessages = 10
                 };
 
-            var sender = new SimpleQueueServiceSender(simpleQueueServiceConfiguration);
-            var senderResponse = sender.Send<MyMessageResponse>(message);
-            senderResponse = sender.Send<MyMessageResponse>(message);
+            var sender = new SimpleQueueServiceSender(simpleQueueServiceSendConfiguration);
+            sender.Send<MyMessageResponse>(message);
+            sender.Send<MyMessageResponse>(message);
 
             var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new SimpleQueueServiceReceiver<IMessageResponse>(simpleQueueServiceConfiguration, messageDispatcher);
+            var receiver = new SimpleQueueServiceReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher);
             receiver.Start();
         }
     }

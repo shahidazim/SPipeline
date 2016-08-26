@@ -9,9 +9,7 @@
 
     public class SimpleQueueServiceSender : SimpleQueueServiceBase, IMessageSender
     {
-        private const string ContentType = "ContentType";
-
-        public SimpleQueueServiceSender(SimpleQueueServiceConfiguration configuration)
+        public SimpleQueueServiceSender(SimpleQueueServiceSendConfiguration configuration)
             : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
         {
         }

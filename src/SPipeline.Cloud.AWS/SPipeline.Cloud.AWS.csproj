@@ -56,8 +56,9 @@
     <Compile Include="QueryUrlBuilder.cs" />
     <Compile Include="SimpleQueueServiceBase.cs" />
     <Compile Include="SimpleQueueServiceReceiver.cs" />
+    <Compile Include="SimpleQueueServiceSendConfiguration.cs" />
     <Compile Include="SimpleQueueServiceSender.cs" />
-    <Compile Include="SimpleQueueServiceConfiguration.cs" />
+    <Compile Include="SimpleQueueServiceReceiveConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

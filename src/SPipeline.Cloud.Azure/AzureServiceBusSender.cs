@@ -3,7 +3,10 @@
     using Microsoft.ServiceBus.Messaging;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Models;
+    using SPipeline.Core.Serializers;
     using System;
+    using System.IO;
+    using System.Text;
 
     /// <summary>
     /// The Azure Service Bus Sender wrapper to send messages
@@ -30,10 +33,9 @@
         public IMessageResponse Send<TMessageResponse>(IMessageRequest message)
             where TMessageResponse : IMessageResponse, new()
         {
-            return Send<TMessageResponse>(new BrokeredMessage(message)
-            {
-                ContentType = message.GetType().AssemblyQualifiedName
-            });
+            var payload = SerializerJson.Serialize(message);
+            var payloadStream = new MemoryStream(Encoding.UTF8.GetBytes(payload));
+            return Send<TMessageResponse>(new BrokeredMessage(payloadStream, true));
         }
 
         /// <summary>
