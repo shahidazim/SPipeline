@@ -1,7 +1,6 @@
 ﻿namespace SPipeline.Cloud.Azure.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using SPipeline.Core.Interfaces;
     using SPipeline.Core.Models;
     using SPipeline.Pipeline;
     using System;

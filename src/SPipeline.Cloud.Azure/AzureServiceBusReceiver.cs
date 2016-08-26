@@ -1,12 +1,11 @@
 ﻿namespace SPipeline.Cloud.Azure
 {
     using Microsoft.ServiceBus.Messaging;
+    using SPipeline.Core;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Serializers;
     using System;
     using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The Azure Service Bus Receiver wrapper to receive and deserialize the messages
@@ -14,12 +13,11 @@
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="SPipeline.Cloud.Azure.AzureServiceBusBase" />
     /// <seealso cref="SPipeline.Core.Interfaces.IMessageReceiver" />
-    public class AzureServiceBusReceiver : AzureServiceBusBase, IMessageReceiver
+    public class AzureServiceBusReceiver : AzureServiceBusBase
     {
-        private AzureServiceBusReceiverConfiguration _configuration;
+        private readonly AzureServiceBusReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
-        private readonly object _lockObject = new object();
-        private bool _isRunning;
+        private readonly IMessageReceiver _messageReceiver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureServiceBusReceiver"/> class.
@@ -31,79 +29,52 @@
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
+            _messageReceiver = new GenericMessageReceiver(_configuration.MessageReceiveThreadTimeoutMilliseconds)
+            {
+                StartCallback = StartCallback
+            };
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                lock (_lockObject)
-                {
-                    return _isRunning;
-                }
-            }
-
-            set
-            {
-                lock (_lockObject)
-                {
-                    _isRunning = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Starts listening to receive the messages from Azure Service Bus queue.
-        /// </summary>
         public void Start()
         {
-            IsRunning = true;
-            var task = Task.Factory.StartNew(() =>
-            {
-                while (IsRunning)
-                {
-                    while (true)
-                    {
-                        var receivedMessage = QueueClient.ReceiveAsync().Result;
-
-                        if (receivedMessage == null)
-                        {
-                            break;
-                        }
-
-                        try
-                        {
-                            var message = GetBody(receivedMessage);
-                            var response = _messageDispatcher.Execute(message);
-
-                            if (response.HasError)
-                            {
-                                // TODO: Implement error handling
-                            }
-
-                            receivedMessage.Complete();
-                        }
-                        catch (Exception ex)
-                        {
-                            // TODO: Implement error handling
-                            receivedMessage.Abandon();
-                        }
-                    }
-                    Thread.Sleep(_configuration.MessageReceiveThreadTimeoutMilliseconds);
-                }
-            });
-
-            task.Wait();
+            _messageReceiver.Start();
         }
 
-        /// <summary>
-        /// Close the Azure Service Bus Queue connection.
-        /// </summary>
         public void Stop()
         {
-            QueueClient.Close();
+            _messageReceiver.Stop();
         }
 
+        private void StartCallback()
+        {
+            while (true)
+            {
+                var receivedMessage = QueueClient.ReceiveAsync().Result;
+
+                if (receivedMessage == null)
+                {
+                    break;
+                }
+
+                try
+                {
+                    var message = GetBody(receivedMessage);
+                    var response = _messageDispatcher.Execute(message);
+
+                    if (response.HasError)
+                    {
+                        // TODO: Implement error handling
+                    }
+
+                    receivedMessage.Complete();
+                }
+                catch (Exception ex)
+                {
+                    // TODO: Implement error handling
+                    receivedMessage.Abandon();
+                }
+            }
+        }
 
         /// <summary>
         /// Deserialized the message body from brokered message.
