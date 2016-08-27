@@ -36,5 +36,13 @@
         /// The maximum number of messages to receive from queue.
         /// </value>
         public int MaxNumberOfMessages { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [create queue].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [create queue]; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateQueue { get; set; }
     }
 }

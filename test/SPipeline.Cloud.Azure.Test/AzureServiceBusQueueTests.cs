@@ -50,7 +50,8 @@
                     ConnectionString = connectionString,
                     QueueName = queueName,
                     MaxSizeInMegabytes = 10240,
-                    MessageTimeToLive = new TimeSpan(1, 0, 0, 0)
+                    MessageTimeToLive = new TimeSpan(1, 0, 0, 0),
+                    CreateQueue = true
                 };
 
             var azureServiceBusReceiverConfiguration
@@ -59,7 +60,8 @@
                     ConnectionString = connectionString,
                     QueueName = queueName,
                     MessageReceiveThreadTimeoutMilliseconds = 1000,
-                    MaxNumberOfMessages = 10
+                    MaxNumberOfMessages = 10,
+                    CreateQueue = false
                 };
 
             var sender = new AzureServiceBusSender(azureServiceBusSendConfiguration);

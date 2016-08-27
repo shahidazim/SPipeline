@@ -38,5 +38,13 @@
         /// The maximum size in megabytes.
         /// </value>
         public int MaxSizeInMegabytes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [create queue].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [create queue]; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateQueue { get; set; }
     }
 }

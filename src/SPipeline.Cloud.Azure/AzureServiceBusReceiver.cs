@@ -10,12 +10,10 @@
     /// <summary>
     /// The Azure Service Bus Receiver wrapper to receive and deserialize the messages
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <seealso cref="SPipeline.Cloud.Azure.AzureServiceBusBase" />
     /// <seealso cref="SPipeline.Core.Interfaces.IMessageReceiver" />
     public class AzureServiceBusReceiver : AzureServiceBusBase
     {
-        private readonly AzureServiceBusReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
@@ -24,15 +22,23 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="messageDispatcher">The message dispatcher.</param>
-        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : base(configuration.ConnectionString, configuration.QueueName)
+        /// <param name="messageReceiver">The message receiver.</param>
+        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue)
         {
-            _configuration = configuration;
             _messageDispatcher = messageDispatcher;
-            _messageReceiver = new GenericMessageReceiver(_configuration.MessageReceiveThreadTimeoutMilliseconds)
-            {
-                StartCallback = StartCallback
-            };
+            _messageReceiver = messageReceiver;
+            _messageReceiver.StartCallback = StartCallback;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="messageDispatcher">The message dispatcher.</param>
+        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
+            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds))
+        {
         }
 
         public void Start()
