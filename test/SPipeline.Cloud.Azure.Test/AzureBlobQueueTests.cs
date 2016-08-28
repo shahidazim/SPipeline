@@ -24,11 +24,8 @@
 
             var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
 
-            //var connectionString = "<connection-string>";
-            //var queueName = "<queue-name>";
-
-            var connectionString = "***REMOVED***";
-            var queueName = "myqueue";
+            var connectionString = "<connection-string>";
+            var queueName = "<queue-name>";
 
             var azureBlobSendConfiguration
                 = new AzureBlobSenderConfiguration
