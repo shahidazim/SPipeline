@@ -1,11 +1,12 @@
 ﻿namespace SPipeline.File
 {
+    using SPipeline.Core.Interfaces;
     using SPipeline.Core.Services;
     using System.IO;
 
     public class FileQueueBase
     {
-        protected readonly FileSystemService fileSystemService;
+        protected readonly IFileSystemService fileSystemService;
 
         public FileQueueBase(string basePath, string queueName, bool createQueue)
         {

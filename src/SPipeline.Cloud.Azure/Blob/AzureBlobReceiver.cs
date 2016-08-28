@@ -1,26 +1,24 @@
-﻿namespace SPipeline.File
+﻿namespace SPipeline.Cloud.Azure.Blob
 {
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
     using System;
 
-    public class FileQueueReceiver : FileQueueBase
+    public class AzureBlobReceiver : AzureBlobBase
     {
-        private readonly FileQueueReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue)
+        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue)
         {
-            _configuration = configuration;
             _messageDispatcher = messageDispatcher;
             _messageReceiver = messageReceiver;
             _messageReceiver.StartCallback = StartCallback;
         }
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
+        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
             : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds))
         {
         }
@@ -35,15 +33,18 @@
             _messageReceiver.Stop();
         }
 
+        /// <summary>
+        /// Starts the callback.
+        /// </summary>
         private void StartCallback()
         {
-            var filePaths = fileSystemService.GetFiles(_configuration.FullPath, "*.*");
+            var blobPaths = blobStorageService.GetAllBlockBlobs();
 
-            foreach (var filePath in filePaths)
+            foreach (var blobPath in blobPaths)
             {
                 try
                 {
-                    var message = GetBody(filePath);
+                    var message = GetBody(blobPath);
                     var response = _messageDispatcher.Execute(message);
 
                     if (response.HasError)
@@ -52,7 +53,7 @@
                     }
                     else
                     {
-                        fileSystemService.DeleteFile(filePath);
+                        blobStorageService.DeleteBlob(blobPath);
                     }
                 }
                 catch (Exception ex)
@@ -62,9 +63,9 @@
             }
         }
 
-        private IMessageRequest GetBody(string filePath)
+        private IMessageRequest GetBody(string blobPath)
         {
-            return (IMessageRequest)SerializerJson.Deserialize(fileSystemService.GetFileContent(filePath));
+            return (IMessageRequest)SerializerJson.Deserialize(blobStorageService.DownloadContent(blobPath));
         }
     }
 }

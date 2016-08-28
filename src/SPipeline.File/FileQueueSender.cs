@@ -19,17 +19,11 @@
         public IMessageResponse Send<TMessageResponse>(IMessageRequest message)
             where TMessageResponse : IMessageResponse, new()
         {
-            return Send<TMessageResponse>(SerializerJson.Serialize(message));
-        }
-
-        private IMessageResponse Send<TMessageResponse>(string payload)
-            where TMessageResponse : IMessageResponse, new()
-        {
             var response = new TMessageResponse();
             try
             {
                 var filePath = FileSystemService.CombinePath(_configuration.FullPath, Guid.NewGuid().ToString());
-                fileSystemService.CreateFile(payload, filePath);
+                fileSystemService.CreateFile(SerializerJson.Serialize(message), filePath);
             }
             catch (Exception ex)
             {
@@ -37,7 +31,6 @@
             }
 
             return response;
-
         }
     }
 }

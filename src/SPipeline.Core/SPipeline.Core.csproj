@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IBlobStorageService.cs" />
     <Compile Include="Services\GenericMessageReceiver.cs" />
     <Compile Include="Exceptions\PipelineNotRegisteredException.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
