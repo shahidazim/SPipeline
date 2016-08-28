@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure
+﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;

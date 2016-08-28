@@ -1,11 +1,9 @@
-﻿using SPipeline.Core.Services;
-
-namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS
 {
     using Amazon.SQS.Model;
-    using SPipeline.Core;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Serializers;
+    using SPipeline.Core.Services;
     using System.Net;
 
     public class SimpleQueueServiceReceiver : SimpleQueueServiceBase
@@ -54,7 +52,7 @@ namespace SPipeline.Cloud.AWS
 
                 foreach (var message in receiveMessageResponse.Messages)
                 {
-                    var response = _messageDispatcher.Execute((IMessageRequest)SerializerJson.Deserialize(message.Body));
+                    var response = _messageDispatcher.Execute(GetBody(message));
 
                     if (response.CanContinue)
                     {
@@ -72,6 +70,11 @@ namespace SPipeline.Cloud.AWS
                     }
                 }
             }
+        }
+
+        private IMessageRequest GetBody(Message message)
+        {
+            return (IMessageRequest)SerializerJson.Deserialize(message.Body);
         }
     }
 }

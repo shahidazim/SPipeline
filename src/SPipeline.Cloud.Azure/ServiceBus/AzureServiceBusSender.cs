@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure
+﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     using Microsoft.ServiceBus.Messaging;
     using SPipeline.Core.Interfaces;
@@ -11,8 +11,7 @@
     /// <summary>
     /// The Azure Service Bus Sender wrapper to send messages
     /// </summary>
-    /// <seealso cref="SPipeline.Cloud.Azure.AzureServiceBusBase" />
-    /// <seealso cref="SPipeline.Core.Interfaces.IMessageSender" />
+    /// <seealso cref="IMessageSender" />
     public class AzureServiceBusSender : AzureServiceBusBase, IMessageSender
     {
         /// <summary>
