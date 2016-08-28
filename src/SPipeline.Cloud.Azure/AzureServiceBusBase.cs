@@ -11,7 +11,7 @@
     {
         private const int DefaultMaxSizeInMegabytes = 1024;
 
-        protected QueueClient QueueClient;
+        protected QueueClient queueClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureServiceBusBase" /> class.
@@ -25,12 +25,13 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusBase"/> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusBase" /> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <param name="queueName">Name of the queue.</param>
         /// <param name="messageTimeToLive">The message time to live.</param>
         /// <param name="maxSizeInMegabytes">The maximum size in megabytes.</param>
+        /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
         protected AzureServiceBusBase(string connectionString, string queueName, TimeSpan messageTimeToLive, int maxSizeInMegabytes, bool createQueue)
         {
             Initialize(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes, createQueue);
@@ -50,7 +51,7 @@
             {
                 CreateQueue(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes);
             }
-            QueueClient = QueueClient.CreateFromConnectionString(connectionString, queueName);
+            queueClient = QueueClient.CreateFromConnectionString(connectionString, queueName);
         }
 
         /// <summary>

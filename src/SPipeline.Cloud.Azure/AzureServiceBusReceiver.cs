@@ -4,6 +4,7 @@
     using SPipeline.Core;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Serializers;
+    using SPipeline.Core.Services;
     using System;
     using System.IO;
 
@@ -55,7 +56,7 @@
         {
             while (true)
             {
-                var receivedMessage = QueueClient.ReceiveAsync().Result;
+                var receivedMessage = queueClient.ReceiveAsync().Result;
 
                 if (receivedMessage == null)
                 {

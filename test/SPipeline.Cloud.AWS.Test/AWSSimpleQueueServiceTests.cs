@@ -49,18 +49,19 @@
             var secretKey = "<secret-key>";
 
 
-            var simpleQueueServiceSendConfiguration
+            var simpleQueueServiceSenderConfiguration
                 = new SimpleQueueServiceSendConfiguration
                 {
                     ServiceUrl = serviceUrl,
                     AccountId = accountId,
                     QueueName = queueName,
                     AccessKey = accessKey,
-                    SecretKey = secretKey
+                    SecretKey = secretKey,
+                    CreateQueue = true
                 };
 
             var simpleQueueServiceReceiveConfiguration
-                = new SimpleQueueServiceReceiveConfiguration
+                = new SimpleQueueServiceReceiverConfiguration
                 {
                     ServiceUrl = serviceUrl,
                     AccountId = accountId,
@@ -68,10 +69,11 @@
                     AccessKey = accessKey,
                     SecretKey = secretKey,
                     MessageReceiveThreadTimeoutMilliseconds = 1000,
-                    MaxNumberOfMessages = 10
+                    MaxNumberOfMessages = 10,
+                    CreateQueue = false
                 };
 
-            var sender = new SimpleQueueServiceSender(simpleQueueServiceSendConfiguration);
+            var sender = new SimpleQueueServiceSender(simpleQueueServiceSenderConfiguration);
             sender.Send<MyMessageResponse>(message);
             sender.Send<MyMessageResponse>(message);
 

@@ -6,29 +6,32 @@
 
     public abstract class SimpleQueueServiceBase
     {
-        protected readonly string ServiceUrl;
-        protected readonly string AccountId;
-        protected readonly string QueueName;
-        protected AmazonSQSClient QueueClient;
+        protected readonly string serviceUrl;
+        protected readonly string accountId;
+        protected readonly string queueName;
+        protected AmazonSQSClient queueClient;
 
-        protected SimpleQueueServiceBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey)
+        protected SimpleQueueServiceBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue)
         {
-            ServiceUrl = serviceUrl;
-            AccountId = accountId;
-            QueueName = queueName;
+            this.serviceUrl = serviceUrl;
+            this.accountId = accountId;
+            this.queueName = queueName;
 
             var awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
             var sqsConfig = new AmazonSQSConfig
             {
                 ServiceURL = serviceUrl
             };
-            QueueClient = new AmazonSQSClient(awsCredentials, sqsConfig);
-            CreateQueue(queueName);
+            queueClient = new AmazonSQSClient(awsCredentials, sqsConfig);
+            if (createQueue)
+            {
+                CreateQueue(queueName);
+            }
         }
 
         private void CreateQueue(string queueName)
         {
-            QueueClient.CreateQueue(new CreateQueueRequest(queueName));
+            queueClient.CreateQueue(new CreateQueueRequest(queueName));
         }
     }
 }

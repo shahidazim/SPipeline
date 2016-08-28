@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Cloud.AWS
 {
-    public class SimpleQueueServiceReceiveConfiguration
+    public class SimpleQueueServiceReceiverConfiguration
     {
         public string ServiceUrl { get; set; }
 
@@ -15,5 +15,7 @@
         public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
 
         public int MaxNumberOfMessages { get; set; }
+
+        public bool CreateQueue { get; set; }
     }
 }

@@ -10,7 +10,7 @@
     public class SimpleQueueServiceSender : SimpleQueueServiceBase, IMessageSender
     {
         public SimpleQueueServiceSender(SimpleQueueServiceSendConfiguration configuration)
-            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
         {
         }
 
@@ -23,10 +23,10 @@
                 var sendMessageRequest = new SendMessageRequest
                 {
                     MessageBody = SerializerJson.Serialize(message),
-                    QueueUrl = QueryUrlBuilder.Create(ServiceUrl, AccountId, QueueName)
+                    QueueUrl = QueryUrlBuilder.Create(serviceUrl, accountId, queueName)
                 };
 
-                var sqsResponse = QueueClient.SendMessage(sendMessageRequest);
+                var sqsResponse = queueClient.SendMessage(sendMessageRequest);
 
                 if (sqsResponse.HttpStatusCode != HttpStatusCode.OK)
                 {

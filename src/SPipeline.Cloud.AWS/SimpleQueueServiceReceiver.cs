@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿using SPipeline.Core.Services;
+
+namespace SPipeline.Cloud.AWS
 {
     using Amazon.SQS.Model;
     using SPipeline.Core;
@@ -8,12 +10,12 @@
 
     public class SimpleQueueServiceReceiver : SimpleQueueServiceBase
     {
-        private readonly SimpleQueueServiceReceiveConfiguration _configuration;
+        private readonly SimpleQueueServiceReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public SimpleQueueServiceReceiver(SimpleQueueServiceReceiveConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey)
+        public SimpleQueueServiceReceiver(SimpleQueueServiceReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
@@ -35,7 +37,7 @@
 
         private void StartCallback()
         {
-            var queueUrl = QueryUrlBuilder.Create(ServiceUrl, AccountId, QueueName);
+            var queueUrl = QueryUrlBuilder.Create(serviceUrl, accountId, queueName);
             var receiveMessageRequest = new ReceiveMessageRequest
             {
                 QueueUrl = queueUrl,
@@ -43,7 +45,7 @@
             };
             while (true)
             {
-                var receiveMessageResponse = QueueClient.ReceiveMessageAsync(receiveMessageRequest).Result;
+                var receiveMessageResponse = queueClient.ReceiveMessageAsync(receiveMessageRequest).Result;
 
                 if (receiveMessageResponse.Messages.Count == 0)
                 {
@@ -57,7 +59,7 @@
                     if (response.CanContinue)
                     {
                         var deleteMessageResponse =
-                            QueueClient.DeleteMessage(new DeleteMessageRequest(queueUrl, message.ReceiptHandle));
+                            queueClient.DeleteMessage(new DeleteMessageRequest(queueUrl, message.ReceiptHandle));
                         if (deleteMessageResponse.HttpStatusCode != HttpStatusCode.OK)
                         {
                             // TODO: Implement error handling

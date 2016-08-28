@@ -53,7 +53,7 @@
             var response = new TMessageResponse();
             try
             {
-                QueueClient.Send(brokeredMessage);
+                queueClient.Send(brokeredMessage);
             }
             catch (Exception ex)
             {
