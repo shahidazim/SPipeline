@@ -24,11 +24,8 @@
 
             var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
 
-            //var connectionString = "<connection-string>";
-            //var queueName = "<queue-name>";
-
-            var connectionString = "DefaultEndpointsProtocol=https;AccountName=spipeline;AccountKey=n3htPVy5aUP71PG0Qi3H3hZEG8N3qoiD6erpIlUOpurim+KdQXbTjUKHep4DE4jKGzsfCXBeR1KVafmVLGeqYA==";
-            var queueName = "myqueue";
+            var connectionString = "<connection-string>";
+            var queueName = "<queue-name>";
 
             var azureBlobSendConfiguration
                 = new AzureBlobSenderConfiguration
