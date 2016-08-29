@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.File
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Services;
     using SPipeline.Core.Services;
     using System.IO;
 

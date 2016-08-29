@@ -1,11 +1,11 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
 
     /// <summary>
     /// The base implementation for action request.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.IActionRequest" />
+    /// <seealso cref="IActionRequest" />
     public abstract class ActionRequestBase : IActionRequest
     {
     }

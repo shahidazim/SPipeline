@@ -44,23 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IBlobStorageService.cs" />
-    <Compile Include="Interfaces\IAWSS3StorageService.cs" />
+    <Compile Include="Interfaces\Services\IBlobStorageService.cs" />
+    <Compile Include="Interfaces\Services\IAWSS3StorageService.cs" />
     <Compile Include="Services\GenericMessageReceiver.cs" />
     <Compile Include="Exceptions\PipelineNotRegisteredException.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
-    <Compile Include="Interfaces\IActionHandler.cs" />
-    <Compile Include="Interfaces\IActionRequest.cs" />
-    <Compile Include="Interfaces\IActionResponse.cs" />
-    <Compile Include="Interfaces\IFileSystemService.cs" />
-    <Compile Include="Interfaces\IMessageDispatcher.cs" />
-    <Compile Include="Interfaces\IMessageRequest.cs" />
-    <Compile Include="Interfaces\IMessageResponse.cs" />
-    <Compile Include="Interfaces\IPipeline.cs" />
-    <Compile Include="Interfaces\IResponse.cs" />
-    <Compile Include="Interfaces\IMessageReceiver.cs" />
-    <Compile Include="Interfaces\IMessageSender.cs" />
-    <Compile Include="Interfaces\ITranslatable.cs" />
+    <Compile Include="Interfaces\Pipeline\IActionHandler.cs" />
+    <Compile Include="Interfaces\Pipeline\IActionRequest.cs" />
+    <Compile Include="Interfaces\Pipeline\IActionResponse.cs" />
+    <Compile Include="Interfaces\Services\IFileSystemService.cs" />
+    <Compile Include="Interfaces\Pipeline\IMessageDispatcher.cs" />
+    <Compile Include="Interfaces\Pipeline\IMessageRequest.cs" />
+    <Compile Include="Interfaces\Pipeline\IMessageResponse.cs" />
+    <Compile Include="Interfaces\Pipeline\IPipeline.cs" />
+    <Compile Include="Interfaces\Pipeline\IResponse.cs" />
+    <Compile Include="Interfaces\Pipeline\IMessageReceiver.cs" />
+    <Compile Include="Interfaces\Pipeline\IMessageSender.cs" />
+    <Compile Include="Interfaces\Pipeline\ITranslatable.cs" />
     <Compile Include="Models\MessageError.cs" />
     <Compile Include="Models\PipelineConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

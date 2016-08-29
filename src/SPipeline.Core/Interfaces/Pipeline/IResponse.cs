@@ -1,12 +1,12 @@
-﻿namespace SPipeline.Core.Interfaces
+﻿namespace SPipeline.Core.Interfaces.Pipeline
 {
-    using SPipeline.Core.Models;
     using System.Collections.Generic;
+    using SPipeline.Core.Models;
 
     /// <summary>
     /// Represents the response.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.ITranslatable" />
+    /// <seealso cref="ITranslatable" />
     public interface IResponse : ITranslatable
     {
         /// <summary>

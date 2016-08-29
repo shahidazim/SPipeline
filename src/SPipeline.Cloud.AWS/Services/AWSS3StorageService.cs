@@ -4,7 +4,7 @@
     using Amazon.S3;
     using Amazon.S3.Model;
     using Amazon.S3.Util;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Services;
     using System.IO;
     using System.Collections.Generic;
     using System.Linq;

@@ -1,11 +1,11 @@
-﻿namespace SPipeline.Core.Interfaces
+﻿namespace SPipeline.Core.Interfaces.Pipeline
 {
     using SPipeline.Core.Models;
 
     /// <summary>
     /// Represents the message request.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.ITranslatable" />
+    /// <seealso cref="ITranslatable" />
     public interface IMessageRequest : ITranslatable
     {
         /// <summary>

@@ -1,9 +1,9 @@
-﻿namespace SPipeline.Core.Interfaces
+﻿namespace SPipeline.Core.Interfaces.Pipeline
 {
     /// <summary>
     /// Represents the message response.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.IResponse" />
+    /// <seealso cref="IResponse" />
     public interface IMessageResponse : IResponse
     {
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿namespace SPipeline.File
 {
     using SPipeline.Core.Services;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
     using System;

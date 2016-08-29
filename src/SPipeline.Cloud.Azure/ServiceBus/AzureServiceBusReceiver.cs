@@ -1,7 +1,7 @@
 ﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     using Microsoft.ServiceBus.Messaging;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
     using System;
@@ -10,7 +10,7 @@
     /// <summary>
     /// The Azure Service Bus Receiver wrapper to receive and deserialize the messages
     /// </summary>
-    /// <seealso cref="IMessageReceiver" />
+    /// <seealso cref="Core.Interfaces.Pipeline.IMessageReceiver" />
     public class AzureServiceBusReceiver : AzureServiceBusBase
     {
         private readonly IMessageDispatcher _messageDispatcher;

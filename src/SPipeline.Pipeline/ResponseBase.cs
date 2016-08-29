@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using System.Collections.Generic;
     using System.Linq;
@@ -8,7 +8,7 @@
     /// <summary>
     /// The base implementation for response to provide error handling.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.IResponse" />
+    /// <seealso cref="IResponse" />
     public abstract class ResponseBase : IResponse
     {
         // The list of errors

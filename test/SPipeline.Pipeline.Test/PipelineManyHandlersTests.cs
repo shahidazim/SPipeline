@@ -1,7 +1,7 @@
 ﻿namespace SPipeline.Pipeline.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using System;
     using System.Threading;

@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Core.Services
+﻿using SPipeline.Core.Interfaces.Services;
+
+namespace SPipeline.Core.Services
 {
     using SPipeline.Core.Interfaces;
     using System.IO;

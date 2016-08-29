@@ -1,7 +1,7 @@
 ﻿namespace SPipeline.Pipeline
 {
     using SPipeline.Core.Extensions;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -14,8 +14,8 @@
     /// </summary>
     /// <typeparam name="TMessageRequest">The type of the message request.</typeparam>
     /// <typeparam name="TMessageResponse">The type of the message response.</typeparam>
-    /// <seealso cref="SPipeline.Core.Interfaces.IPipeline" />
-    /// <seealso cref="SPipeline.Core.Interfaces.IPipeline{TMessageRequest, TMessageResponse}" />
+    /// <seealso cref="IPipeline" />
+    /// <seealso cref="IPipeline{TMessageRequest,TMessageResponse}" />
     public abstract class PipelineBase<TMessageRequest, TMessageResponse> : IPipeline, IPipeline<TMessageRequest, TMessageResponse>
         where TMessageRequest : IMessageRequest
         where TMessageResponse : IMessageResponse, new()

@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Cloud.AWS.S3
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
     using System;

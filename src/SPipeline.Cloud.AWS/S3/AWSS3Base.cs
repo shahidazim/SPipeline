@@ -1,7 +1,7 @@
 ﻿namespace SPipeline.Cloud.AWS.S3
 {
     using SPipeline.Cloud.AWS.Services;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Services;
 
     public abstract class AWSS3Base
     {

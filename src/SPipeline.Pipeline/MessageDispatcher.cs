@@ -1,14 +1,14 @@
 ﻿namespace SPipeline.Pipeline
 {
     using SPipeline.Core.Exceptions;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// A utility class to register and execute pipeline based on the type of message.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.IMessageDispatcher" />
+    /// <seealso cref="IMessageDispatcher" />
     public class MessageDispatcher : IMessageDispatcher
     {
         /// Represents the registered pipelines.

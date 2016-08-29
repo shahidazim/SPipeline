@@ -2,7 +2,7 @@
 {
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Services;
     using System;
     using System.Collections.Generic;
 

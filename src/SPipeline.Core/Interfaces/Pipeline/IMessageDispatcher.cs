@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Core.Interfaces
+﻿namespace SPipeline.Core.Interfaces.Pipeline
 {
     /// <summary>
     /// Represents the message dispatcher.

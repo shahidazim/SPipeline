@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Cloud.Azure.Blob
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
     using System;

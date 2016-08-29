@@ -2,7 +2,7 @@
 {
     using Amazon.SQS.Model;
     using SPipeline.Cloud.AWS.Util;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
     using System;

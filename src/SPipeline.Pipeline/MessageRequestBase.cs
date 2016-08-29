@@ -1,12 +1,12 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
 
     /// <summary>
     /// The base implementation for message request.
     /// </summary>
-    /// <seealso cref="SPipeline.Core.Interfaces.IMessageRequest" />
+    /// <seealso cref="IMessageRequest" />
     public abstract class MessageRequestBase : IMessageRequest
     {
         /// <summary>

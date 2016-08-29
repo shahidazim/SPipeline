@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
 
     /// <summary>
     /// The generic implementation for pipeline, which can be used instead of creating a custom pipeline.

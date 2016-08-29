@@ -1,12 +1,12 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
 
     /// <summary>
     /// The base implementation for action response.
     /// </summary>
     /// <seealso cref="SPipeline.Pipeline.ResponseBase" />
-    /// <seealso cref="SPipeline.Core.Interfaces.IActionResponse" />
+    /// <seealso cref="IActionResponse" />
     public class ActionResponseBase : ResponseBase, IActionResponse
     {
     }

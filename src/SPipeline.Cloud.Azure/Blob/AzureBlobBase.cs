@@ -1,7 +1,7 @@
 namespace SPipeline.Cloud.Azure.Blob
 {
     using SPipeline.Cloud.Azure.Services;
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Services;
 
     public abstract class AzureBlobBase
     {

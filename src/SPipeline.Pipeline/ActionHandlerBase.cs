@@ -1,6 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
-    using SPipeline.Core.Interfaces;
+    using SPipeline.Core.Interfaces.Pipeline;
     using System;
 
     /// <summary>
@@ -10,8 +10,8 @@
     /// <typeparam name="TActionResponse">The type of the action response.</typeparam>
     /// <typeparam name="TTranslateRequest">The type of the translate request.</typeparam>
     /// <typeparam name="TTranslateResponse">The type of the translate response.</typeparam>
-    /// <seealso cref="SPipeline.Core.Interfaces.IActionHandler" />
-    /// <seealso cref="SPipeline.Core.Interfaces.IActionHandler{TActionRequest, TActionResponse, TTranslateRequest, TTranslateResponse}" />
+    /// <seealso cref="IActionHandler" />
+    /// <seealso cref="IActionHandler{TActionRequest,TActionResponse,TTranslateRequest,TTranslateResponse}" />
     public abstract class ActionHandlerBase<TActionRequest, TActionResponse, TTranslateRequest, TTranslateResponse>
         : IActionHandler, IActionHandler<TActionRequest, TActionResponse, TTranslateRequest, TTranslateResponse>
         where TActionRequest : IActionRequest
