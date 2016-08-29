@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure.Blob
+namespace SPipeline.Cloud.Azure.Blob
 {
     using SPipeline.Cloud.Azure.Services;
     using SPipeline.Core.Interfaces;
