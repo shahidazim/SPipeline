@@ -2,7 +2,6 @@
 
 namespace SPipeline.Core.Services
 {
-    using SPipeline.Core.Interfaces;
     using System.IO;
 
     public class FileSystemService : IFileSystemService
