@@ -1,17 +1,17 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS.SQS
 {
     using Amazon.Runtime;
     using Amazon.SQS;
     using Amazon.SQS.Model;
 
-    public abstract class SimpleQueueServiceBase
+    public abstract class AWSSQSBase
     {
         protected readonly string serviceUrl;
         protected readonly string accountId;
         protected readonly string queueName;
         protected AmazonSQSClient queueClient;
 
-        protected SimpleQueueServiceBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue)
+        protected AWSSQSBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue)
         {
             this.serviceUrl = serviceUrl;
             this.accountId = accountId;

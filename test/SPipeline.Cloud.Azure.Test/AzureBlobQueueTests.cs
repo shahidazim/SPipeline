@@ -9,7 +9,7 @@
     public class AzureBlobQueueTests
     {
         [TestMethod]
-        //[Ignore]
+        [Ignore]
         [TestCategory("Integration"), TestCategory("AzureQueue")]
         public void AzureBlobQueue_SendAndReceiveMessage()
         {

@@ -1,6 +1,6 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS.SQS
 {
-    public class SimpleQueueServiceSendConfiguration
+    public class AWSSQSSenderConfiguration
     {
         public string ServiceUrl { get; set; }
 

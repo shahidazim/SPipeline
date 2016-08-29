@@ -1,15 +1,16 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS.SQS
 {
     using Amazon.SQS.Model;
+    using SPipeline.Cloud.AWS.Util;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
     using System;
     using System.Net;
 
-    public class SimpleQueueServiceSender : SimpleQueueServiceBase, IMessageSender
+    public class AWSSQSSender : AWSSQSBase, IMessageSender
     {
-        public SimpleQueueServiceSender(SimpleQueueServiceSendConfiguration configuration)
+        public AWSSQSSender(AWSSQSSenderConfiguration configuration)
             : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
         {
         }
@@ -23,7 +24,7 @@
                 var sendMessageRequest = new SendMessageRequest
                 {
                     MessageBody = SerializerJson.Serialize(message),
-                    QueueUrl = QueryUrlBuilder.Create(serviceUrl, accountId, queueName)
+                    QueueUrl = AWSQueryUrlBuilder.Create(serviceUrl, accountId, queueName)
                 };
 
                 var sqsResponse = queueClient.SendMessage(sendMessageRequest);

@@ -1,18 +1,19 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS.SQS
 {
     using Amazon.SQS.Model;
+    using SPipeline.Cloud.AWS.Util;
     using SPipeline.Core.Interfaces;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
     using System.Net;
 
-    public class SimpleQueueServiceReceiver : SimpleQueueServiceBase
+    public class AWSSQSReceiver : AWSSQSBase
     {
-        private readonly SimpleQueueServiceReceiverConfiguration _configuration;
+        private readonly AWSSQSReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public SimpleQueueServiceReceiver(SimpleQueueServiceReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
+        public AWSSQSReceiver(AWSSQSReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
             : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
         {
             _configuration = configuration;
@@ -35,7 +36,7 @@
 
         private void StartCallback()
         {
-            var queueUrl = QueryUrlBuilder.Create(serviceUrl, accountId, queueName);
+            var queueUrl = AWSQueryUrlBuilder.Create(serviceUrl, accountId, queueName);
             var receiveMessageRequest = new ReceiveMessageRequest
             {
                 QueueUrl = queueUrl,

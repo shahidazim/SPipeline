@@ -85,7 +85,7 @@
     <Compile Include="ServiceBus\AzureServiceBusReceiverConfiguration.cs" />
     <Compile Include="ServiceBus\AzureServiceBusSender.cs" />
     <Compile Include="ServiceBus\AzureServiceBusSenderConfiguration.cs" />
-    <Compile Include="Services\BlobStorageService.cs" />
+    <Compile Include="Services\AzureBlobStorageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

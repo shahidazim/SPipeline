@@ -1,8 +1,8 @@
-﻿namespace SPipeline.Cloud.AWS
+﻿namespace SPipeline.Cloud.AWS.Util
 {
     using System;
 
-    public static class QueryUrlBuilder
+    public static class AWSQueryUrlBuilder
     {
         public static string Create(string serviceUrl, string accountId, string queueName)
         {

@@ -9,7 +9,7 @@
 
         protected AzureBlobBase(string connectionString, string queueName, bool createQueue)
         {
-            blobStorageService = new BlobStorageService(connectionString, queueName, createQueue);
+            blobStorageService = new AzureBlobStorageService(connectionString, queueName, createQueue);
         }
     }
 }

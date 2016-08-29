@@ -51,9 +51,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AWSSimpleQueueServiceTests.cs" />
+    <Compile Include="AWSS3Tests.cs" />
+    <Compile Include="AWSSQSTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryUrlBuilderTest.cs" />
+    <Compile Include="AWSQueryUrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SPipeline.Cloud.AWS\SPipeline.Cloud.AWS.csproj">

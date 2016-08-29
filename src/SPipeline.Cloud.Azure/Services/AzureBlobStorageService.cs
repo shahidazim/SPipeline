@@ -6,11 +6,11 @@
     using System;
     using System.Collections.Generic;
 
-    public class BlobStorageService : IBlobStorageService
+    public class AzureBlobStorageService : IBlobStorageService
     {
         private CloudBlobContainer _blobContainer;
 
-        public BlobStorageService(string connectionString, string containerName, bool createQueue)
+        public AzureBlobStorageService(string connectionString, string containerName, bool createQueue)
         {
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();

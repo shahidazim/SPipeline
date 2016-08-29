@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IBlobStorageService.cs" />
+    <Compile Include="Interfaces\IAWSS3StorageService.cs" />
     <Compile Include="Services\GenericMessageReceiver.cs" />
     <Compile Include="Exceptions\PipelineNotRegisteredException.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />

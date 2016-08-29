@@ -1,35 +1,34 @@
 ﻿namespace SPipeline.Cloud.AWS.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using SPipeline.Cloud.AWS;
+    using SPipeline.Cloud.AWS.SQS;
     using SPipeline.Core.Models;
-    using SPipeline.Core.Interfaces;
     using SPipeline.Pipeline;
 
-    [TestClass]
-    public class AWSSimpleQueueServiceTests
+    public class MyMessageRequest : MessageRequestBase
     {
-        public class MyMessageRequest : MessageRequestBase
-        {
-            public MyMessageRequest(PipelineConfiguration configuration) : base(configuration)
-            {
-            }
-
-            public string Name { get; set; }
-        }
-
-        public class MyMessageResponse : MessageResponseBase
+        public MyMessageRequest(PipelineConfiguration configuration) : base(configuration)
         {
         }
 
-        public class MyConfiguration
-        {
-        }
+        public string Name { get; set; }
+    }
 
+    public class MyMessageResponse : MessageResponseBase
+    {
+    }
+
+    public class MyConfiguration
+    {
+    }
+
+    [TestClass]
+    public class AWSSQSTests
+    {
         [TestMethod]
         [Ignore]
         [TestCategory("Integration"), TestCategory("SQS")]
-        public void AWSSimpleQueueService_SendAndReceiveMessages()
+        public void AWSSQS_SendAndReceiveMessages()
         {
             var message = new MyMessageRequest(new PipelineConfiguration
             {
@@ -42,7 +41,7 @@
 
             var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
 
-            var serviceUrl = "<service-url>";
+            var serviceUrl = "https://sqs.<region>.amazonaws.com/";
             var accountId = "<account-id>";
             var queueName = "<queue-name>";
             var accessKey = "<access-key>";
@@ -50,7 +49,7 @@
 
 
             var simpleQueueServiceSenderConfiguration
-                = new SimpleQueueServiceSendConfiguration
+                = new AWSSQSSenderConfiguration
                 {
                     ServiceUrl = serviceUrl,
                     AccountId = accountId,
@@ -61,7 +60,7 @@
                 };
 
             var simpleQueueServiceReceiveConfiguration
-                = new SimpleQueueServiceReceiverConfiguration
+                = new AWSSQSReceiverConfiguration
                 {
                     ServiceUrl = serviceUrl,
                     AccountId = accountId,
@@ -73,12 +72,12 @@
                     CreateQueue = false
                 };
 
-            var sender = new SimpleQueueServiceSender(simpleQueueServiceSenderConfiguration);
+            var sender = new AWSSQSSender(simpleQueueServiceSenderConfiguration);
             sender.Send<MyMessageResponse>(message);
             sender.Send<MyMessageResponse>(message);
 
             var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new SimpleQueueServiceReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher);
+            var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher);
             receiver.Start();
         }
     }
