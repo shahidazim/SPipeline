@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.File
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
@@ -11,8 +12,8 @@
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue)
+        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
+            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
@@ -20,8 +21,8 @@
             _messageReceiver.StartCallback = StartCallback;
         }
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds))
+        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
+            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
         {
         }
 
@@ -48,7 +49,7 @@
 
                     if (response.HasError)
                     {
-                        // TODO: Implement error handling
+                        loggerService?.Error(response.GetFormattedError());
                     }
                     else
                     {
@@ -57,7 +58,7 @@
                 }
                 catch (Exception ex)
                 {
-                    // TODO: Implement error handling
+                    loggerService?.Exception(ex);
                 }
             }
         }

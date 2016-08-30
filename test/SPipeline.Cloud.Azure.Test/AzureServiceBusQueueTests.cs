@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Cloud.Azure.ServiceBus;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
     using System;
 
@@ -65,13 +66,21 @@
                     CreateQueue = false
                 };
 
-            var sender = new AzureServiceBusSender(azureServiceBusSendConfiguration);
-            sender.Send<MyMessageResponse>(message);
-            sender.Send<MyMessageResponse>(message);
+            var loggerService = new LoggerService("Azure");
+            try
+            {
+                var sender = new AzureServiceBusSender(azureServiceBusSendConfiguration, loggerService);
+                sender.Send<MyMessageResponse>(message);
+                sender.Send<MyMessageResponse>(message);
 
-            var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new AzureServiceBusReceiver(azureServiceBusReceiverConfiguration, messageDispatcher);
-            receiver.Start();
+                var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
+                var receiver = new AzureServiceBusReceiver(azureServiceBusReceiverConfiguration, messageDispatcher, loggerService);
+                receiver.Start();
+            }
+            catch (Exception ex)
+            {
+                loggerService.Exception(ex);
+            }
         }
     }
 }

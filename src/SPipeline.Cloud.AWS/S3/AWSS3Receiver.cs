@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.Cloud.AWS.S3
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
@@ -10,16 +11,16 @@
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public AWSS3Receiver(AWSS3ReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
-            : base(configuration.ServiceUrl, configuration.BucketName, configuration.AccessKey, configuration.SecretKey, configuration.CreateBucket)
+        public AWSS3Receiver(AWSS3ReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
+            : base(configuration.ServiceUrl, configuration.BucketName, configuration.AccessKey, configuration.SecretKey, configuration.CreateBucket, loggerService)
         {
             _messageDispatcher = messageDispatcher;
             _messageReceiver = messageReceiver;
             _messageReceiver.StartCallback = StartCallback;
         }
 
-        public AWSS3Receiver(AWSS3ReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds))
+        public AWSS3Receiver(AWSS3ReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
+            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
         {
         }
 
@@ -48,7 +49,7 @@
 
                     if (response.HasError)
                     {
-                        // TODO: Implement error handling
+                        loggerService?.Error(response.GetFormattedError());
                     }
                     else
                     {
@@ -57,7 +58,7 @@
                 }
                 catch (Exception ex)
                 {
-                    // TODO: Implement error handling
+                    loggerService?.Exception(ex);
                 }
             }
         }

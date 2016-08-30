@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.Cloud.Azure.Blob
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
@@ -7,8 +8,8 @@
 
     public class AzureBlobSender : AzureBlobBase, IMessageSender
     {
-        public AzureBlobSender(AzureBlobSenderConfiguration configuration)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue)
+        public AzureBlobSender(AzureBlobSenderConfiguration configuration, ILoggerService loggerService)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
         }
 
@@ -22,6 +23,7 @@
             }
             catch (Exception ex)
             {
+                loggerService?.Exception(ex);
                 response.AddError(new MessageError(ex, false));
             }
 

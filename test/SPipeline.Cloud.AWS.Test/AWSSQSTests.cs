@@ -3,7 +3,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Cloud.AWS.SQS;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
+    using System;
 
     public class MyMessageRequest : MessageRequestBase
     {
@@ -72,13 +74,21 @@
                     CreateQueue = false
                 };
 
-            var sender = new AWSSQSSender(simpleQueueServiceSenderConfiguration);
-            sender.Send<MyMessageResponse>(message);
-            sender.Send<MyMessageResponse>(message);
+            var loggerService = new LoggerService("AWS");
+            try
+            {
+                var sender = new AWSSQSSender(simpleQueueServiceSenderConfiguration, new LoggerService("AWSSQSSender"));
+                sender.Send<MyMessageResponse>(message);
+                sender.Send<MyMessageResponse>(message);
 
-            var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher);
-            receiver.Start();
+                var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
+                var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher, new LoggerService("AWSSQSSender"));
+                receiver.Start();
+            }
+            catch (Exception ex)
+            {
+                loggerService.Exception(ex);
+            }
         }
     }
 }

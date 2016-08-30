@@ -1,6 +1,7 @@
 ﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     using Microsoft.ServiceBus.Messaging;
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
@@ -15,15 +16,17 @@
     public class AzureServiceBusSender : AzureServiceBusBase, IMessageSender
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusSender"/> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusSender" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public AzureServiceBusSender(AzureServiceBusSenderConfiguration configuration)
+        /// <param name="loggerService">The logger service.</param>
+        public AzureServiceBusSender(AzureServiceBusSenderConfiguration configuration, ILoggerService loggerService)
             : base(configuration.ConnectionString,
                    configuration.QueueName,
                    configuration.MessageTimeToLive,
                    configuration.MaxSizeInMegabytes,
-                   configuration.CreateQueue)
+                   configuration.CreateQueue,
+                   loggerService)
         {
         }
 
@@ -56,6 +59,7 @@
             }
             catch (Exception ex)
             {
+                loggerService?.Exception(ex);
                 response.AddError(new MessageError(ex, false));
             }
 

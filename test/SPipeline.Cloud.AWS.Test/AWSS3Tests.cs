@@ -3,7 +3,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Cloud.AWS.S3;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
+    using System;
 
     [TestClass]
     public class AWSS3Tests
@@ -50,13 +52,21 @@
                     CreateBucket = false
                 };
 
-            var sender = new AWSS3Sender(s3SenderConfiguration);
-            sender.Send<MyMessageResponse>(message);
-            sender.Send<MyMessageResponse>(message);
+            var loggerService = new LoggerService("AWS");
+            try
+            {
+                var sender = new AWSS3Sender(s3SenderConfiguration, loggerService);
+                sender.Send<MyMessageResponse>(message);
+                sender.Send<MyMessageResponse>(message);
 
-            var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new AWSS3Receiver(s3ReceiveConfiguration, messageDispatcher);
-            receiver.Start();
+                var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
+                var receiver = new AWSS3Receiver(s3ReceiveConfiguration, messageDispatcher, loggerService);
+                receiver.Start();
+            }
+            catch (Exception ex)
+            {
+                loggerService.Exception(ex);
+            }
         }
     }
 }

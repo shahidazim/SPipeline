@@ -65,10 +65,17 @@
       <Project>{8ecf58f2-2e96-4103-a519-605ee70d5423}</Project>
       <Name>SPipeline.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\SPipeline.Logger.NLog\SPipeline.Logger.NLog.csproj">
+      <Project>{B6C0F40F-6219-408D-A477-52CE098B078C}</Project>
+      <Name>SPipeline.Logger.NLog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\SPipeline.Pipeline\SPipeline.Pipeline.csproj">
       <Project>{d240cf1b-a9e0-48ac-93da-1edbcec2f25e}</Project>
       <Name>SPipeline.Pipeline</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

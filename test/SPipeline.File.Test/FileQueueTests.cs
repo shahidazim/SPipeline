@@ -1,7 +1,9 @@
 ﻿namespace SPipeline.File.Test
 {
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
+    using System;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -61,13 +63,21 @@
                     CreateQueue = false
                 };
 
-            var sender = new FileQueueSender(fileQueueSenderConfiguration);
-            sender.Send<MyMessageResponse>(message);
-            sender.Send<MyMessageResponse>(message);
+            var loggerService = new LoggerService("File");
+            try
+            {
+                var sender = new FileQueueSender(fileQueueSenderConfiguration, loggerService);
+                sender.Send<MyMessageResponse>(message);
+                sender.Send<MyMessageResponse>(message);
 
-            var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new FileQueueReceiver(fileQueueReceiveConfiguration, messageDispatcher);
-            receiver.Start();
+                var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
+                var receiver = new FileQueueReceiver(fileQueueReceiveConfiguration, messageDispatcher, loggerService);
+                receiver.Start();
+            }
+            catch (Exception ex)
+            {
+                loggerService.Exception(ex);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using Amazon.SQS.Model;
     using SPipeline.Cloud.AWS.Util;
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
@@ -10,8 +11,8 @@
 
     public class AWSSQSSender : AWSSQSBase, IMessageSender
     {
-        public AWSSQSSender(AWSSQSSenderConfiguration configuration)
-            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
+        public AWSSQSSender(AWSSQSSenderConfiguration configuration, ILoggerService loggerService)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue, loggerService)
         {
         }
 
@@ -36,6 +37,7 @@
             }
             catch (Exception ex)
             {
+                loggerService?.Exception(ex);
                 response.AddError(new MessageError(ex, false));
             }
 

@@ -2,6 +2,7 @@
 {
     using Amazon.SQS.Model;
     using SPipeline.Cloud.AWS.Util;
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
@@ -13,8 +14,8 @@
         private readonly IMessageDispatcher _messageDispatcher;
         private readonly IMessageReceiver _messageReceiver;
 
-        public AWSSQSReceiver(AWSSQSReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue)
+        public AWSSQSReceiver(AWSSQSReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
+            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue, loggerService)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
@@ -61,13 +62,13 @@
                             queueClient.DeleteMessage(new DeleteMessageRequest(queueUrl, message.ReceiptHandle));
                         if (deleteMessageResponse.HttpStatusCode != HttpStatusCode.OK)
                         {
-                            // TODO: Implement error handling
+                            loggerService?.Error(deleteMessageResponse.ToString());
                         }
                     }
 
                     if (response.HasError)
                     {
-                        // TODO: Implement error handling
+                        loggerService?.Error(response.GetFormattedError());
                     }
                 }
             }

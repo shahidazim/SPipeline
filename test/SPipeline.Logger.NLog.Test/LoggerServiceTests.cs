@@ -7,6 +7,7 @@
     public class LoggerServiceTests
     {
         [TestMethod]
+        [Ignore]
         [TestCategory("Integration"), TestCategory("Logging")]
         public void LoggerService_LogError()
         {
@@ -15,6 +16,7 @@
         }
 
         [TestMethod]
+        [Ignore]
         [TestCategory("Integration"), TestCategory("Logging")]
         public void LoggerService_LogException()
         {

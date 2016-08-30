@@ -3,7 +3,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Cloud.Azure.Blob;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
+    using System;
 
     [TestClass]
     public class AzureBlobQueueTests
@@ -44,13 +46,21 @@
                     CreateQueue = false
                 };
 
-            var sender = new AzureBlobSender(azureBlobSendConfiguration);
-            sender.Send<MyMessageResponse>(message);
-            sender.Send<MyMessageResponse>(message);
+            var loggerService = new LoggerService("Azure");
+            try
+            {
+                var sender = new AzureBlobSender(azureBlobSendConfiguration, loggerService);
+                sender.Send<MyMessageResponse>(message);
+                sender.Send<MyMessageResponse>(message);
 
-            var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-            var receiver = new AzureBlobReceiver(azureBlobReceiverConfiguration, messageDispatcher);
-            receiver.Start();
+                var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
+                var receiver = new AzureBlobReceiver(azureBlobReceiverConfiguration, messageDispatcher, loggerService);
+                receiver.Start();
+            }
+            catch (Exception ex)
+            {
+                loggerService.Exception(ex);
+            }
         }
     }
 }

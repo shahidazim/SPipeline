@@ -1,6 +1,7 @@
 ﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     using Microsoft.ServiceBus.Messaging;
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using SPipeline.Core.Services;
@@ -17,13 +18,14 @@
         private readonly IMessageReceiver _messageReceiver;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver"/> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="messageDispatcher">The message dispatcher.</param>
         /// <param name="messageReceiver">The message receiver.</param>
-        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue)
+        /// <param name="loggerService">The logger service.</param>
+        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _messageDispatcher = messageDispatcher;
             _messageReceiver = messageReceiver;
@@ -31,12 +33,13 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver"/> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="messageDispatcher">The message dispatcher.</param>
-        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds))
+        /// <param name="loggerService">The logger service.</param>
+        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
+            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
         {
         }
 
@@ -68,14 +71,14 @@
 
                     if (response.HasError)
                     {
-                        // TODO: Implement error handling
+                        loggerService?.Error(response.GetFormattedError());
                     }
 
                     receivedMessage.Complete();
                 }
                 catch (Exception ex)
                 {
-                    // TODO: Implement error handling
+                    loggerService?.Exception(ex);
                     receivedMessage.Abandon();
                 }
             }

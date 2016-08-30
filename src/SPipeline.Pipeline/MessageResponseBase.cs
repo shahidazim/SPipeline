@@ -1,6 +1,8 @@
 ﻿namespace SPipeline.Pipeline
 {
     using SPipeline.Core.Interfaces.Pipeline;
+    using System.Linq;
+    using System.Text;
 
     /// <summary>
     /// The base implementation for message response.
@@ -19,6 +21,13 @@
             {
                 _errors.Clear();
             }
+        }
+
+        public string GetFormattedError()
+        {
+            var errorMessage = new StringBuilder();
+            Errors.Select(x => errorMessage.Append(x.GetFormattedError()));
+            return errorMessage.ToString();
         }
     }
 }

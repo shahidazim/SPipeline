@@ -2,6 +2,7 @@
 {
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
+    using SPipeline.Core.DebugHelper;
     using System;
 
     /// <summary>
@@ -12,6 +13,7 @@
         private const int DefaultMaxSizeInMegabytes = 1024;
 
         protected QueueClient queueClient;
+        protected ILoggerService loggerService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureServiceBusBase" /> class.
@@ -19,9 +21,10 @@
         /// <param name="connectionString">The connection string.</param>
         /// <param name="queueName">Name of the queue.</param>
         /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
-        protected AzureServiceBusBase(string connectionString, string queueName, bool createQueue)
+        /// <param name="loggerService">The logger service.</param>
+        protected AzureServiceBusBase(string connectionString, string queueName, bool createQueue, ILoggerService loggerService)
         {
-            Initialize(connectionString, queueName, null, 0, createQueue);
+            Initialize(connectionString, queueName, loggerService, null, 0, createQueue);
         }
 
         /// <summary>
@@ -32,9 +35,9 @@
         /// <param name="messageTimeToLive">The message time to live.</param>
         /// <param name="maxSizeInMegabytes">The maximum size in megabytes.</param>
         /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
-        protected AzureServiceBusBase(string connectionString, string queueName, TimeSpan messageTimeToLive, int maxSizeInMegabytes, bool createQueue)
+        protected AzureServiceBusBase(string connectionString, string queueName, TimeSpan messageTimeToLive, int maxSizeInMegabytes, bool createQueue, ILoggerService loggerService)
         {
-            Initialize(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes, createQueue);
+            Initialize(connectionString, queueName, loggerService, messageTimeToLive, maxSizeInMegabytes, createQueue);
         }
 
         /// <summary>
@@ -42,11 +45,13 @@
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <param name="queueName">Name of the queue.</param>
+        /// <param name="loggerService">The logger service.</param>
         /// <param name="messageTimeToLive">The message time to live.</param>
         /// <param name="maxSizeInMegabytes">The maximum size in megabytes.</param>
         /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
-        private void Initialize(string connectionString, string queueName, TimeSpan? messageTimeToLive = null, int maxSizeInMegabytes = 0, bool createQueue = false)
+        private void Initialize(string connectionString, string queueName, ILoggerService loggerService, TimeSpan? messageTimeToLive = null, int maxSizeInMegabytes = 0, bool createQueue = false)
         {
+            this.loggerService = loggerService;
             if (createQueue)
             {
                 CreateQueue(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes);

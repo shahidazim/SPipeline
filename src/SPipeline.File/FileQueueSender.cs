@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.File
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Services;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
@@ -10,8 +11,8 @@
     {
         private readonly FileQueueSenderConfiguration _configuration;
 
-        public FileQueueSender(FileQueueSenderConfiguration configuration)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue)
+        public FileQueueSender(FileQueueSenderConfiguration configuration, ILoggerService loggerService)
+            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _configuration = configuration;
         }
@@ -27,6 +28,7 @@
             }
             catch (Exception ex)
             {
+                loggerService?.Exception(ex);
                 response.AddError(new MessageError(ex, false));
             }
 
