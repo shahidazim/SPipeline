@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
 
     /// <summary>
@@ -12,5 +13,8 @@
         where TMessageRequest : IMessageRequest
         where TMessageResponse : IMessageResponse, new()
     {
+        public GenericPipeline(ILoggerService loggerService) : base(loggerService)
+        {
+        }
     }
 }

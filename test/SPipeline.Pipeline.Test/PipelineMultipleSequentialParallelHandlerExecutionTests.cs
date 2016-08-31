@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
 
     [TestClass]
     public class PipelineMultipleSequentialParallelHandlerExecutionTests
@@ -48,7 +49,7 @@
 
         public class MultiHandlersPipeline : PipelineBase<MultiHandlersRequest, MultiHandlersResponse>
         {
-            public MultiHandlersPipeline()
+            public MultiHandlersPipeline() : base(new LoggerService("Pipeline"))
             {
                 AddSequential(new FirstActionHandler(), new FirstActionHandler());
                 AddParallel(new FirstActionHandler(), new FirstActionHandler(), new FirstActionHandler());

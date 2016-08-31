@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using System;
 
     [TestClass]
@@ -101,7 +102,7 @@
 
         public class ThreeHandlersSequentialPipeline : PipelineBase<ThreeHandlersSequentialRequest, ThreeHandlersSequentialResponse>
         {
-            public ThreeHandlersSequentialPipeline()
+            public ThreeHandlersSequentialPipeline() : base(new LoggerService("Pipeline"))
             {
                 AddSequential(new FirstActionHandler());
 

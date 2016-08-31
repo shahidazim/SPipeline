@@ -41,7 +41,7 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("AWSSQS"));
 
             var serviceUrl = "https://sqs.<region>.amazonaws.com/";
             var accountId = "<account-id>";

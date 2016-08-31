@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using System;
 
     [TestClass]
@@ -48,7 +49,7 @@
         [TestMethod]
         public void Generic_Pipeline_Test()
         {
-            var pipeline = new GenericPipeline<GenericPipelineRequest, GenericPipelineResponse>();
+            var pipeline = new GenericPipeline<GenericPipelineRequest, GenericPipelineResponse>(new LoggerService("Generic"));
             pipeline.AddSequential(
                 new GenericActionHandler<GenericPipelineRequest, GenericPipelineResponse>(req => new GenericActionRequest(), res => new GenericPipelineResponse()));
             var response = pipeline.Execute(new GenericPipelineRequest(new PipelineConfiguration { ClearErrorsBeforeNextHandler = false }));

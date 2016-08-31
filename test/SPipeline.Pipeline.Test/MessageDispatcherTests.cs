@@ -1,4 +1,6 @@
-﻿namespace SPipeline.Pipeline.Test
+﻿using SPipeline.Logger.NLog;
+
+namespace SPipeline.Pipeline.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Exceptions;
@@ -24,6 +26,9 @@
 
     class DummyPipeline : PipelineBase<DummyMessage1, DummyResponse>
     {
+        public DummyPipeline() : base(new LoggerService("Dummy"))
+        {
+        }
     }
 
     [TestClass]

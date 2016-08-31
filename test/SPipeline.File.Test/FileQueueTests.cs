@@ -41,7 +41,7 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("File"));
 
             var queueName = "<queue-name>";
             var basePath = @"<pre-exist-folder-path>";

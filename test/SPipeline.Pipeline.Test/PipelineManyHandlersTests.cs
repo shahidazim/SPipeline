@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
     using System;
     using System.Threading;
 
@@ -57,7 +58,7 @@
 
         public class MultipleHandlersParallelPipeline : PipelineBase<MultipleHandlersParallelRequest, MultipleHandlersParallelResponse>
         {
-            public MultipleHandlersParallelPipeline()
+            public MultipleHandlersParallelPipeline() : base(new LoggerService("Pipeline"))
             {
                 var actionHandlers = new FirstActionHandler<MultipleHandlersParallelRequest, MultipleHandlersParallelResponse>[LoopCount];
                 for (var i = 0; i < LoopCount; i++)

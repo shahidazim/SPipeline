@@ -24,7 +24,7 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("AWSS3"));
 
             var serviceUrl = "https://s3-<region>.amazonaws.com/";
             var bucketName = "<bucket-name>";

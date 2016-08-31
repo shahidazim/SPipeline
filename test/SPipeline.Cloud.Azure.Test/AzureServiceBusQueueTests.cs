@@ -41,7 +41,7 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>();
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("Generic"));
 
             var connectionString = "<connection-string>";
             var queueName = "<queue-name>";

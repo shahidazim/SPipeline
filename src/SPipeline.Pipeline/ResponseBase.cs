@@ -4,6 +4,7 @@
     using SPipeline.Core.Models;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     /// <summary>
     /// The base implementation for response to provide error handling.
@@ -12,7 +13,7 @@
     public abstract class ResponseBase : IResponse
     {
         // The list of errors
-        protected readonly List<MessageError> _errors = new List<MessageError>();
+        private readonly List<MessageError> _errors = new List<MessageError>();
 
         /// <summary>
         /// Gets the errors.
@@ -61,6 +62,25 @@
         {
             _errors.AddRange(errors);
             return this;
+        }
+
+        /// <summary>
+        /// Clears the errors.
+        /// </summary>
+        /// <param name="clearErrorsBeforeNextHandler">if set to <c>true</c> clear errors before next handler execution.</param>
+        public void ClearErrors(bool clearErrorsBeforeNextHandler)
+        {
+            if (clearErrorsBeforeNextHandler)
+            {
+                _errors.Clear();
+            }
+        }
+
+        public string GetFormattedError()
+        {
+            var errorMessage = new StringBuilder();
+            Errors.Select(x => errorMessage.Append(x.GetFormattedError()));
+            return errorMessage.ToString();
         }
     }
 }

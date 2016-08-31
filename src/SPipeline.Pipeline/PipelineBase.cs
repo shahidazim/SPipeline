@@ -1,5 +1,6 @@
 ﻿namespace SPipeline.Pipeline
 {
+    using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Extensions;
     using SPipeline.Core.Interfaces.Pipeline;
     using System;
@@ -23,11 +24,14 @@
         // Represents the action handlers list
         private readonly List<List<IActionHandler>> _actionHandlersList = new List<List<IActionHandler>>();
 
+        protected readonly ILoggerService loggerService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PipelineBase{TMessageRequest, TMessageResponse}"/> class.
         /// </summary>
-        protected PipelineBase()
+        protected PipelineBase(ILoggerService loggerService)
         {
+            this.loggerService = loggerService;
             MessageType = typeof(TMessageRequest);
         }
 
@@ -97,14 +101,14 @@
         /// <param name="messageRequest">The message request.</param>
         /// <param name="actionHandler">The action handler.</param>
         /// <returns></returns>
-        private static TMessageResponse ExecuteSequentialHandler(TMessageRequest messageRequest, IActionHandler actionHandler)
+        private TMessageResponse ExecuteSequentialHandler(TMessageRequest messageRequest, IActionHandler actionHandler)
         {
             // Translate the request and execute handler.
             var messageResponse = actionHandler.Execute((IActionRequest)actionHandler.TranslateRequest(messageRequest));
 
             if (messageResponse.HasError)
             {
-                // TODO: Implement error handling
+                loggerService.Error(messageResponse.GetFormattedError());
             }
 
             // Return the translated response.
