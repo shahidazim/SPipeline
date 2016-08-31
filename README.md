@@ -1,6 +1,5 @@
 # SPipeline
 
-----------
 ![](https://hexona.visualstudio.com/_apis/public/build/definitions/e2426ce0-e841-4af6-81c4-4eca7e4ae4d8/3/badge)
 
 
