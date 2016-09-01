@@ -12,8 +12,6 @@
 
         public string SecretKey { get; set; }
 
-        public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
-
         public int MaxNumberOfMessages { get; set; }
 
         public bool CreateQueue { get; set; }

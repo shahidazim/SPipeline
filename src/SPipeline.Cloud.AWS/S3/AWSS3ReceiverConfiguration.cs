@@ -10,8 +10,6 @@
 
         public string SecretKey { get; set; }
 
-        public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
-
         public bool CreateBucket { get; set; }
 
     }

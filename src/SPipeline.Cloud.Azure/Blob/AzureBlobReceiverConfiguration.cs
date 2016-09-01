@@ -7,7 +7,5 @@
         public string QueueName { get; set; }
 
         public bool CreateQueue { get; set; }
-
-        public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
     }
 }

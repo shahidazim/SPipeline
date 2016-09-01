@@ -4,7 +4,6 @@
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
-    using SPipeline.Core.Services;
     using System;
     using System.IO;
 
@@ -12,25 +11,9 @@
     /// The Azure Service Bus Receiver wrapper to receive and deserialize the messages
     /// </summary>
     /// <seealso cref="Core.Interfaces.Pipeline.IMessageReceiver" />
-    public class AzureServiceBusReceiver : AzureServiceBusBase
+    public class AzureServiceBusReceiver : AzureServiceBusBase, IMessageReceiver
     {
         private readonly IMessageDispatcher _messageDispatcher;
-        private readonly IMessageReceiver _messageReceiver;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusReceiver" /> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="messageDispatcher">The message dispatcher.</param>
-        /// <param name="messageReceiver">The message receiver.</param>
-        /// <param name="loggerService">The logger service.</param>
-        public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
-        {
-            _messageDispatcher = messageDispatcher;
-            _messageReceiver = messageReceiver;
-            _messageReceiver.StartCallback = StartCallback;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureServiceBusReceiver" /> class.
@@ -39,21 +22,12 @@
         /// <param name="messageDispatcher">The message dispatcher.</param>
         /// <param name="loggerService">The logger service.</param>
         public AzureServiceBusReceiver(AzureServiceBusReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
+            _messageDispatcher = messageDispatcher;
         }
 
-        public void Start()
-        {
-            _messageReceiver.Start();
-        }
-
-        public void Stop()
-        {
-            _messageReceiver.Stop();
-        }
-
-        private void StartCallback()
+        public void Process()
         {
             while (true)
             {

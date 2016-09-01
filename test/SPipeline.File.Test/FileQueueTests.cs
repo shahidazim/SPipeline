@@ -59,7 +59,6 @@
                 {
                     BasePath = basePath,
                     QueueName = queueName,
-                    MessageReceiveThreadTimeoutMilliseconds = 1000,
                     CreateQueue = false
                 };
 
@@ -72,7 +71,7 @@
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
                 var receiver = new FileQueueReceiver(fileQueueReceiveConfiguration, messageDispatcher, loggerService);
-                receiver.Start();
+                receiver.Process();
             }
             catch (Exception ex)
             {

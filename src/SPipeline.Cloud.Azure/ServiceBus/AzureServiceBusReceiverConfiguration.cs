@@ -22,14 +22,6 @@
         public string QueueName { get; set; }
 
         /// <summary>
-        /// Gets or sets the message receive thread timeout milliseconds.
-        /// </summary>
-        /// <value>
-        /// The message receive thread timeout milliseconds.
-        /// </value>
-        public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
-
-        /// <summary>
         /// Gets or sets the maximum number of messages to receive from queue.
         /// </summary>
         /// <value>

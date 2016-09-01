@@ -47,7 +47,6 @@
     <Compile Include="Interfaces\Services\IBlobStorageService.cs" />
     <Compile Include="Interfaces\Services\IAWSS3StorageService.cs" />
     <Compile Include="DebugHelper\ILoggerService.cs" />
-    <Compile Include="Services\GenericMessageReceiver.cs" />
     <Compile Include="Exceptions\PipelineNotRegisteredException.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Interfaces\Pipeline\IActionHandler.cs" />

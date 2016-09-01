@@ -69,7 +69,6 @@
                     QueueName = queueName,
                     AccessKey = accessKey,
                     SecretKey = secretKey,
-                    MessageReceiveThreadTimeoutMilliseconds = 1000,
                     MaxNumberOfMessages = 10,
                     CreateQueue = false
                 };
@@ -83,7 +82,7 @@
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
                 var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher, new LoggerService("AWSSQSSender"));
-                receiver.Start();
+                receiver.Process();
             }
             catch (Exception ex)
             {

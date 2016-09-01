@@ -3,40 +3,21 @@
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
-    using SPipeline.Core.Services;
     using System;
 
-    public class FileQueueReceiver : FileQueueBase
+    public class FileQueueReceiver : FileQueueBase, IMessageReceiver
     {
         private readonly FileQueueReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
-        private readonly IMessageReceiver _messageReceiver;
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
+        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
             : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
-            _messageReceiver = messageReceiver;
-            _messageReceiver.StartCallback = StartCallback;
         }
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
-        {
-        }
-
-        public void Start()
-        {
-            _messageReceiver.Start();
-        }
-
-        public void Stop()
-        {
-            _messageReceiver.Stop();
-        }
-
-        private void StartCallback()
+        public void Process()
         {
             var filePaths = fileSystemService.GetFiles(_configuration.FullPath, "*.*");
 

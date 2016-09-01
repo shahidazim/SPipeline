@@ -3,41 +3,18 @@
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
-    using SPipeline.Core.Services;
     using System;
 
-    public class AzureBlobReceiver : AzureBlobBase
+    public class AzureBlobReceiver : AzureBlobBase, IMessageReceiver
     {
         private readonly IMessageDispatcher _messageDispatcher;
-        private readonly IMessageReceiver _messageReceiver;
 
-        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, IMessageReceiver messageReceiver, ILoggerService loggerService)
+        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
             : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _messageDispatcher = messageDispatcher;
-            _messageReceiver = messageReceiver;
-            _messageReceiver.StartCallback = StartCallback;
         }
-
-        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : this(configuration, messageDispatcher, new GenericMessageReceiver(configuration.MessageReceiveThreadTimeoutMilliseconds), loggerService)
-        {
-        }
-
-        public void Start()
-        {
-            _messageReceiver.Start();
-        }
-
-        public void Stop()
-        {
-            _messageReceiver.Stop();
-        }
-
-        /// <summary>
-        /// Starts the callback.
-        /// </summary>
-        private void StartCallback()
+        public void Process()
         {
             var blobPaths = blobStorageService.GetAllBlockBlobs();
 

@@ -10,8 +10,6 @@
 
         public bool CreateQueue { get; set; }
 
-        public int MessageReceiveThreadTimeoutMilliseconds { get; set; }
-
         public string FullPath => FileSystemService.CombinePath(BasePath, QueueName);
     }
 }

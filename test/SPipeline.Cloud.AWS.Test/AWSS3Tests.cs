@@ -48,7 +48,6 @@
                     BucketName = bucketName,
                     AccessKey = accessKey,
                     SecretKey = secretKey,
-                    MessageReceiveThreadTimeoutMilliseconds = 1000,
                     CreateBucket = false
                 };
 
@@ -61,7 +60,7 @@
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
                 var receiver = new AWSS3Receiver(s3ReceiveConfiguration, messageDispatcher, loggerService);
-                receiver.Start();
+                receiver.Process();
             }
             catch (Exception ex)
             {

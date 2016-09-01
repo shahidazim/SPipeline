@@ -5,37 +5,21 @@
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
-    using SPipeline.Core.Services;
     using System.Net;
 
-    public class AWSSQSReceiver : AWSSQSBase
+    public class AWSSQSReceiver : AWSSQSBase, IMessageReceiver
     {
         private readonly AWSSQSReceiverConfiguration _configuration;
         private readonly IMessageDispatcher _messageDispatcher;
-        private readonly IMessageReceiver _messageReceiver;
 
         public AWSSQSReceiver(AWSSQSReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
             : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue, loggerService)
         {
             _configuration = configuration;
             _messageDispatcher = messageDispatcher;
-            _messageReceiver = new GenericMessageReceiver(_configuration.MessageReceiveThreadTimeoutMilliseconds)
-            {
-                StartCallback = StartCallback
-            };
         }
 
-        public void Start()
-        {
-            _messageReceiver.Start();
-        }
-
-        public void Stop()
-        {
-            _messageReceiver.Stop();
-        }
-
-        private void StartCallback()
+        public void Process()
         {
             var queueUrl = AWSQueryUrlBuilder.Create(serviceUrl, accountId, queueName);
             var receiveMessageRequest = new ReceiveMessageRequest

@@ -61,7 +61,6 @@
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
-                    MessageReceiveThreadTimeoutMilliseconds = 1000,
                     MaxNumberOfMessages = 10,
                     CreateQueue = false
                 };
@@ -75,7 +74,7 @@
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
                 var receiver = new AzureServiceBusReceiver(azureServiceBusReceiverConfiguration, messageDispatcher, loggerService);
-                receiver.Start();
+                receiver.Process();
             }
             catch (Exception ex)
             {

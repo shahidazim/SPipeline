@@ -42,7 +42,6 @@
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
-                    MessageReceiveThreadTimeoutMilliseconds = 1000,
                     CreateQueue = false
                 };
 
@@ -55,7 +54,7 @@
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
                 var receiver = new AzureBlobReceiver(azureBlobReceiverConfiguration, messageDispatcher, loggerService);
-                receiver.Start();
+                receiver.Process();
             }
             catch (Exception ex)
             {
