@@ -1,6 +1,9 @@
 # SPipeline
 
-![](https://hexona.visualstudio.com/_apis/public/build/definitions/e2426ce0-e841-4af6-81c4-4eca7e4ae4d8/3/badge)
+![Build status](https://hexona.visualstudio.com/_apis/public/build/definitions/e2426ce0-e841-4af6-81c4-4eca7e4ae4d8/3/badge)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/eo3qsrf8cnmyso47?svg=true)](https://ci.appveyor.com/project/shahidazim/spipeline)
+
 
 
 SPipeline is .Net based pipeline solution with Sequential and Parallel handlers.
