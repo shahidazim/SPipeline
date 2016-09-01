@@ -8,7 +8,7 @@
     public interface IMessageReceiver
     {
         /// <summary>
-        /// Starts the receiver to receive messages.
+        /// Receiver messages from queue and process them
         /// </summary>
         void Process();
     }

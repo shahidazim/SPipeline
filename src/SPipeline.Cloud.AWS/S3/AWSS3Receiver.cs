@@ -15,6 +15,9 @@
             _messageDispatcher = messageDispatcher;
         }
 
+        /// <summary>
+        /// Receiver messages from queue and process them
+        /// </summary>
         public void Process()
         {
             var objectKeys = s3StorageService.GetAllObjectKeys();

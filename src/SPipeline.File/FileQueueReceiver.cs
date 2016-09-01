@@ -17,6 +17,9 @@
             _messageDispatcher = messageDispatcher;
         }
 
+        /// <summary>
+        /// Receiver messages from queue and process them
+        /// </summary>
         public void Process()
         {
             var filePaths = fileSystemService.GetFiles(_configuration.FullPath, "*.*");
