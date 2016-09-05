@@ -34,12 +34,12 @@
         private static
         string CreateDebugFormattedMessage(StackFrame frame, string parameters)
         {
-            return $"{frame.GetFileName()}#{frame.GetFileLineNumber()} : {frame.GetMethod().ReflectedType.Name}.{frame.GetMethod().Name}({parameters})";
+            return $"{frame.GetFileName()}#{frame.GetFileLineNumber()} : {frame.GetMethod().DeclaringType.Name}.{frame.GetMethod().Name}({parameters})";
         }
 
         private static string CreateReleaseFormattedMessage(StackFrame frame, string parameters)
         {
-            return $"{frame.GetMethod().ReflectedType.Name}.{frame.GetMethod().Name}({parameters})";
+            return $"{frame.GetMethod().DeclaringType.Name}.{frame.GetMethod().Name}({parameters})";
         }
 
     }
