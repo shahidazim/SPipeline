@@ -1,40 +1,18 @@
 ﻿namespace SPipeline.Cloud.AWS.SQS
 {
-    using Amazon.Runtime;
-    using Amazon.SQS;
-    using Amazon.SQS.Model;
+    using SPipeline.Cloud.AWS.Services;
     using SPipeline.Core.DebugHelper;
+    using SPipeline.Core.Interfaces.Services;
 
     public abstract class AWSSQSBase
     {
-        protected readonly string serviceUrl;
-        protected readonly string accountId;
-        protected readonly string queueName;
-        protected AmazonSQSClient queueClient;
         protected readonly ILoggerService loggerService;
+        protected readonly IQueueService queueService;
 
-        protected AWSSQSBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue, ILoggerService loggerService)
+        protected AWSSQSBase(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue, ILoggerService loggerService, int maxNumberOfMessages = 0)
         {
-            this.serviceUrl = serviceUrl;
-            this.accountId = accountId;
-            this.queueName = queueName;
             this.loggerService = loggerService;
-
-            var awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-            var sqsConfig = new AmazonSQSConfig
-            {
-                ServiceURL = serviceUrl
-            };
-            queueClient = new AmazonSQSClient(awsCredentials, sqsConfig);
-            if (createQueue)
-            {
-                CreateQueue(queueName);
-            }
-        }
-
-        private void CreateQueue(string queueName)
-        {
-            queueClient.CreateQueue(new CreateQueueRequest(queueName));
+            queueService = new AWSSQSService(serviceUrl, queueName, accountId, accessKey, secretKey, createQueue, maxNumberOfMessages);
         }
     }
 }

@@ -15,6 +15,8 @@
         [TestCategory("Integration"), TestCategory("S3")]
         public void AWSS3_SendAndReceiveMessages()
         {
+            var loggerService = new LoggerService("AWS");
+
             var message = new MyMessageRequest(new PipelineConfiguration
             {
                 ClearErrorsBeforeNextHandler = false,
@@ -24,12 +26,12 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("AWSS3"));
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(loggerService);
 
-            var serviceUrl = "https://s3-<region>.amazonaws.com/";
-            var bucketName = "<bucket-name>";
-            var accessKey = "<access-key>";
-            var secretKey = "<secret-key>";
+            const string serviceUrl = "https://s3-<region>.amazonaws.com/";
+            const string bucketName = "<bucket-name>";
+            const string accessKey = "<access-key>";
+            const string secretKey = "<secret-key>";
 
             var s3SenderConfiguration
                 = new AWSS3SenderConfiguration
@@ -51,7 +53,6 @@
                     CreateBucket = false
                 };
 
-            var loggerService = new LoggerService("AWS");
             try
             {
                 var sender = new AWSS3Sender(s3SenderConfiguration, loggerService);

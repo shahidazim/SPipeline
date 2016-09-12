@@ -1,9 +1,9 @@
 ﻿namespace SPipeline.Cloud.Azure.ServiceBus
 {
     /// <summary>
-    /// The Azure Service Bus Receiver Configuration
+    /// The Azure Service Bus Queue Receiver Configuration
     /// </summary>
-    public class AzureServiceBusReceiverConfiguration
+    public class AzureServiceBusQueueReceiverConfiguration
     {
         /// <summary>
         /// Gets or sets the connection string.

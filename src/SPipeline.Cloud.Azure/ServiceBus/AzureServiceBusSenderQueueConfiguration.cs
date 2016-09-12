@@ -3,9 +3,9 @@
     using System;
 
     /// <summary>
-    /// The Azure Service Bus Sender Configuration
+    /// The Azure Service Bus Queue Sender Configuration
     /// </summary>
-    public class AzureServiceBusSenderConfiguration
+    public class AzureServiceBusSenderQueueConfiguration
     {
         /// <summary>
         /// Gets or sets the Azure Service Bus connection string.

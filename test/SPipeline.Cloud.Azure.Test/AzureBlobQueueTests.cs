@@ -15,6 +15,8 @@
         [TestCategory("Integration"), TestCategory("AzureQueue")]
         public void AzureBlobQueue_SendAndReceiveMessage()
         {
+            var loggerService = new LoggerService("Azure");
+
             var message = new MyMessageRequest(new PipelineConfiguration
             {
                 ClearErrorsBeforeNextHandler = false,
@@ -24,10 +26,10 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("Azure"));
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(loggerService);
 
-            var connectionString = "<connection-string>";
-            var queueName = "<queue-name>";
+            const string connectionString = "<connection-string>";
+            const string queueName = "<queue-name>";
 
             var azureBlobSendConfiguration
                 = new AzureBlobSenderConfiguration
@@ -45,7 +47,6 @@
                     CreateQueue = false
                 };
 
-            var loggerService = new LoggerService("Azure");
             try
             {
                 var sender = new AzureBlobSender(azureBlobSendConfiguration, loggerService);

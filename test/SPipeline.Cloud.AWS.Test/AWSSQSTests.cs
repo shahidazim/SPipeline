@@ -32,6 +32,8 @@
         [TestCategory("Integration"), TestCategory("SQS")]
         public void AWSSQS_SendAndReceiveMessages()
         {
+            var loggerService = new LoggerService("AWS");
+
             var message = new MyMessageRequest(new PipelineConfiguration
             {
                 ClearErrorsBeforeNextHandler = false,
@@ -41,14 +43,13 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("AWSSQS"));
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(loggerService);
 
-            var serviceUrl = "https://sqs.<region>.amazonaws.com/";
-            var accountId = "<account-id>";
-            var queueName = "<queue-name>";
-            var accessKey = "<access-key>";
-            var secretKey = "<secret-key>";
-
+            const string serviceUrl = "https://sqs.<region>.amazonaws.com/";
+            const string accountId = "<account-id>";
+            const string queueName = "<queue-name>";
+            const string accessKey = "<access-key>";
+            const string secretKey = "<secret-key>";
 
             var simpleQueueServiceSenderConfiguration
                 = new AWSSQSSenderConfiguration
@@ -73,15 +74,14 @@
                     CreateQueue = false
                 };
 
-            var loggerService = new LoggerService("AWS");
             try
             {
-                var sender = new AWSSQSSender(simpleQueueServiceSenderConfiguration, new LoggerService("AWSSQSSender"));
+                var sender = new AWSSQSSender(simpleQueueServiceSenderConfiguration, loggerService);
                 sender.Send<MyMessageResponse>(message);
                 sender.Send<MyMessageResponse>(message);
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-                var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher, new LoggerService("AWSSQSSender"));
+                var receiver = new AWSSQSReceiver(simpleQueueServiceReceiveConfiguration, messageDispatcher, loggerService);
                 receiver.Process();
             }
             catch (Exception ex)

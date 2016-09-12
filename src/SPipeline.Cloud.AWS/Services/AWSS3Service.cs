@@ -5,30 +5,35 @@
     using Amazon.S3.Model;
     using Amazon.S3.Util;
     using SPipeline.Core.Interfaces.Services;
+    using SPipeline.Cloud.AWS.Util;
+    using System;
     using System.IO;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
 
-    public class AWSS3StorageService : IAWSS3StorageService
+    public class AWSS3Service : IStorageService
     {
+        private readonly string _serviceUrl;
         private readonly string _bucketName;
         private readonly AmazonS3Client _s3Client;
 
-        public AWSS3StorageService(
+        public AWSS3Service(
             string serviceUrl,
             string bucketName,
             string accessKey,
             string secretKey,
             bool createBucket)
         {
+            _serviceUrl = serviceUrl;
             _bucketName = bucketName;
 
             var awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-            var sqsConfig = new AmazonS3Config
+            var s3Config = new AmazonS3Config
             {
                 ServiceURL = serviceUrl
             };
-            _s3Client = new AmazonS3Client(awsCredentials, sqsConfig);
+            _s3Client = new AmazonS3Client(awsCredentials, s3Config);
 
             if (createBucket)
             {
@@ -38,39 +43,57 @@
 
         private void CreateBucket()
         {
-            if (!AmazonS3Util.DoesS3BucketExist(_s3Client, _bucketName))
+            if (AmazonS3Util.DoesS3BucketExist(_s3Client, _bucketName))
             {
-                var putBucketRequest = new PutBucketRequest
-                {
-                    BucketName = _bucketName,
-                    UseClientRegion = true
-                };
+                return;
+            }
 
-                var response = _s3Client.PutBucket(putBucketRequest);
+            var putBucketRequest = new PutBucketRequest
+            {
+                BucketName = _bucketName,
+                UseClientRegion = true
+            };
+            var response = _s3Client.PutBucket(putBucketRequest);
+
+            if (AWSResponseValidator.IsValid(response))
+            {
+                throw new AWSS3ServiceException(response.ToString());
             }
         }
 
-        public void UplaodObject(string content, string objectKey)
+        public Uri Uplaod(string content, string reference)
         {
             var request = new PutObjectRequest
             {
                 BucketName = _bucketName,
-                Key = objectKey,
+                Key = reference,
                 ContentBody = content
             };
             var response = _s3Client.PutObject(request);
+
+            if (AWSResponseValidator.IsValid(response))
+            {
+                throw new AWSS3ServiceException(response.ToString());
+            }
+
+            return AWSUrlBuilder.CreateS3Url(_serviceUrl, _bucketName, reference);
         }
 
-        public string DownloadObject(string objectKey)
+        public string Download(string reference)
         {
             var request = new GetObjectRequest
             {
                 BucketName = _bucketName,
-                Key = objectKey
+                Key = reference
             };
 
             using (var response = _s3Client.GetObject(request))
             {
+                if (AWSResponseValidator.IsValid(response))
+                {
+                    throw new AWSS3ServiceException(response.ToString());
+                }
+
                 using (var responseStream = response.ResponseStream)
                 {
                     using (var reader = new StreamReader(responseStream))
@@ -81,20 +104,25 @@
             }
         }
 
-        public void DeleteObject(string objectKey)
+        public void Delete(string reference)
         {
             var request = new DeleteObjectRequest
             {
                 BucketName = _bucketName,
-                Key = objectKey
+                Key = reference
             };
 
             var response = _s3Client.DeleteObject(request);
+
+            if (AWSResponseValidator.IsValid(response))
+            {
+                throw new AWSS3ServiceException(response.ToString());
+            }
         }
 
-        public List<string> GetAllObjectKeys()
+        public IEnumerable<string> GetAllReferences()
         {
-            var keys = new List<string>();
+            var references = new List<string>();
             var request = new ListObjectsV2Request
             {
                 BucketName = _bucketName,
@@ -104,10 +132,16 @@
             do
             {
                 response = _s3Client.ListObjectsV2(request);
-                keys.AddRange(response.S3Objects.Select(entry => entry.Key));
+
+                if (AWSResponseValidator.IsValid(response))
+                {
+                    throw new AWSS3ServiceException(response.ToString());
+                }
+
+                references.AddRange(response.S3Objects.Select(entry => entry.Key));
                 request.ContinuationToken = response.NextContinuationToken;
             } while (response.IsTruncated);
-            return keys;
+            return references;
         }
     }
 }

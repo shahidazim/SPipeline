@@ -1,20 +1,18 @@
 ﻿namespace SPipeline.File
 {
     using SPipeline.Core.DebugHelper;
-    using SPipeline.Core.Services;
     using SPipeline.Core.Interfaces.Pipeline;
+    using SPipeline.Core.Interfaces.Services;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
+    using SPipeline.Core.Util;
     using System;
 
     public class FileQueueSender : FileQueueBase, IMessageSender
     {
-        private readonly FileQueueSenderConfiguration _configuration;
-
-        public FileQueueSender(FileQueueSenderConfiguration configuration, ILoggerService loggerService)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, loggerService)
+        public FileQueueSender(FileQueueSenderConfiguration configuration, ILoggerService loggerService, IFileSystemService fileSystemService)
+            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, configuration.FullPath, loggerService, fileSystemService)
         {
-            _configuration = configuration;
         }
 
         public IMessageResponse Send<TMessageResponse>(IMessageRequest message)
@@ -23,8 +21,7 @@
             var response = new TMessageResponse();
             try
             {
-                var filePath = FileSystemService.CombinePath(_configuration.FullPath, Guid.NewGuid().ToString());
-                fileSystemService.CreateFile(SerializerJson.Serialize(message), filePath);
+                fileStorageService.Uplaod(SerializerJson.Serialize(message), ReferenceBuilder.Generate());
             }
             catch (Exception ex)
             {

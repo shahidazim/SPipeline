@@ -62,8 +62,12 @@
     <Compile Include="S3\AWSS3ReceiverConfiguration.cs" />
     <Compile Include="S3\AWSS3Sender.cs" />
     <Compile Include="S3\AWSS3SenderConfiguration.cs" />
-    <Compile Include="Services\AWSS3StorageService.cs" />
-    <Compile Include="Util\AWSQueryUrlBuilder.cs" />
+    <Compile Include="Services\AWSS3Service.cs" />
+    <Compile Include="Services\AWSS3ServiceException.cs" />
+    <Compile Include="Services\AWSSQSService.cs" />
+    <Compile Include="Services\AWSSQSServiceException.cs" />
+    <Compile Include="Util\AWSResponseValidator.cs" />
+    <Compile Include="Util\AWSUrlBuilder.cs" />
     <Compile Include="SQS\AWSSQSBase.cs" />
     <Compile Include="SQS\AWSSQSReceiver.cs" />
     <Compile Include="SQS\AWSSQSSenderConfiguration.cs" />

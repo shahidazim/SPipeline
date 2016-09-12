@@ -1,16 +1,10 @@
-﻿using SPipeline.Core.Interfaces.Services;
-
-namespace SPipeline.Core.Services
+﻿namespace SPipeline.Core.Services
 {
+    using SPipeline.Core.Interfaces.Services;
     using System.IO;
 
     public class FileSystemService : IFileSystemService
     {
-        public void MoveFile(string sourceFile, string destinationFile)
-        {
-            File.Move(sourceFile, destinationFile);
-        }
-
         public void DeleteFile(string pathToFile)
         {
             File.Delete(pathToFile);

@@ -20,22 +20,22 @@
         /// </summary>
         public void Process()
         {
-            var objectKeys = s3StorageService.GetAllObjectKeys();
-            foreach (var objectKey in objectKeys)
+            var references = storageService.GetAllReferences();
+            foreach (var reference in references)
             {
                 try
                 {
-                    var message = GetBody(objectKey);
+                    var receivedMessage = storageService.Download(reference);
+                    var message = GetBody(receivedMessage);
                     var response = _messageDispatcher.Execute(message);
 
                     if (response.HasError)
                     {
                         loggerService?.Error(response.GetFormattedError());
+                        continue;
                     }
-                    else
-                    {
-                        s3StorageService.DeleteObject(objectKey);
-                    }
+
+                    storageService.Delete(reference);
                 }
                 catch (Exception ex)
                 {
@@ -44,9 +44,9 @@
             }
         }
 
-        private IMessageRequest GetBody(string objectKey)
+        private IMessageRequest GetBody(string message)
         {
-            return (IMessageRequest)SerializerJson.Deserialize(s3StorageService.DownloadObject(objectKey));
+            return (IMessageRequest)SerializerJson.Deserialize(message);
         }
     }
 }

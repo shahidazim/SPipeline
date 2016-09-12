@@ -6,11 +6,11 @@
     using System;
     using System.Collections.Generic;
 
-    public class AzureBlobStorageService : IBlobStorageService
+    public class AzureBlobService : IStorageService
     {
         private CloudBlobContainer _blobContainer;
 
-        public AzureBlobStorageService(string connectionString, string containerName, bool createQueue)
+        public AzureBlobService(string connectionString, string containerName, bool createQueue)
         {
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -32,26 +32,26 @@
             _blobContainer.CreateIfNotExists(BlobContainerPublicAccessType.Blob);
         }
 
-        public Uri UplaodContent(string content, string blobName)
+        public Uri Uplaod(string content, string reference)
         {
-            var blockBlob = _blobContainer.GetBlockBlobReference(blobName);
+            var blockBlob = _blobContainer.GetBlockBlobReference(reference);
             blockBlob.UploadText(content);
             return blockBlob.Uri;
         }
 
-        public string DownloadContent(string blobName)
+        public string Download(string reference)
         {
-            var blockBlob = _blobContainer.GetBlockBlobReference(blobName);
+            var blockBlob = _blobContainer.GetBlockBlobReference(reference);
             return blockBlob.DownloadText();
         }
 
-        public void DeleteBlob(string blobName)
+        public void Delete(string reference)
         {
-            var blockBlob = _blobContainer.GetBlockBlobReference(blobName);
+            var blockBlob = _blobContainer.GetBlockBlobReference(reference);
             blockBlob.DeleteIfExists();
         }
 
-        public List<string> GetAllBlockBlobs()
+        public IEnumerable<string> GetAllReferences()
         {
             var blobs = new List<string>();
             foreach (var item in _blobContainer.ListBlobs())

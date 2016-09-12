@@ -6,12 +6,12 @@ namespace SPipeline.Cloud.Azure.Blob
 
     public abstract class AzureBlobBase
     {
-        protected readonly IBlobStorageService blobStorageService;
+        protected readonly IStorageService storageService;
         protected readonly ILoggerService loggerService;
 
         protected AzureBlobBase(string connectionString, string queueName, bool createQueue, ILoggerService loggerService)
         {
-            blobStorageService = new AzureBlobStorageService(connectionString, queueName, createQueue);
+            storageService = new AzureBlobService(connectionString, queueName, createQueue);
             this.loggerService = loggerService;
         }
     }

@@ -11,6 +11,5 @@
         public string SecretKey { get; set; }
 
         public bool CreateBucket { get; set; }
-
     }
 }

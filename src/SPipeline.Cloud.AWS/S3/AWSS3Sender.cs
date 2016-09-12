@@ -4,6 +4,7 @@
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Models;
     using SPipeline.Core.Serializers;
+    using SPipeline.Core.Util;
     using System;
 
     public class AWSS3Sender : AWSS3Base, IMessageSender
@@ -19,7 +20,7 @@
             var response = new TMessageResponse();
             try
             {
-                s3StorageService.UplaodObject(SerializerJson.Serialize(message), Guid.NewGuid().ToString());
+                storageService.Uplaod(SerializerJson.Serialize(message), ReferenceBuilder.Generate());
             }
             catch (Exception ex)
             {

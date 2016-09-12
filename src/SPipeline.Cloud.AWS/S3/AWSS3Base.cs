@@ -6,12 +6,13 @@
 
     public abstract class AWSS3Base
     {
-        protected readonly IAWSS3StorageService s3StorageService;
+        protected readonly IStorageService storageService;
         protected readonly ILoggerService loggerService;
 
         protected AWSS3Base(string serviceUrl, string bucketName, string accessKey, string secretKey, bool createQueue, ILoggerService loggerService)
         {
-            s3StorageService = new AWSS3StorageService(serviceUrl, bucketName, accessKey, secretKey, createQueue);
+            this.loggerService = loggerService;
+            storageService = new AWSS3Service(serviceUrl, bucketName, accessKey, secretKey, createQueue);
         }
     }
 }

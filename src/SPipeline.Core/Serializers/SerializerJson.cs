@@ -8,7 +8,7 @@
 
         static SerializerJson()
         {
-            Settings = new JsonSerializerSettings()
+            Settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             };

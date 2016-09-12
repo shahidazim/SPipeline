@@ -1,6 +1,7 @@
 ﻿namespace SPipeline.File.Test
 {
     using SPipeline.Core.Models;
+    using SPipeline.Core.Services;
     using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
     using System;
@@ -43,8 +44,8 @@
 
             var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("File"));
 
-            var queueName = "<queue-name>";
-            var basePath = @"<pre-exist-folder-path>";
+            const string queueName = "<queue-name>";
+            const string basePath = @"<pre-exist-folder-path>";
 
             var fileQueueSenderConfiguration
                 = new FileQueueSenderConfiguration
@@ -63,14 +64,15 @@
                 };
 
             var loggerService = new LoggerService("File");
+            var fileSystemService = new FileSystemService();
             try
             {
-                var sender = new FileQueueSender(fileQueueSenderConfiguration, loggerService);
+                var sender = new FileQueueSender(fileQueueSenderConfiguration, loggerService, fileSystemService);
                 sender.Send<MyMessageResponse>(message);
                 sender.Send<MyMessageResponse>(message);
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-                var receiver = new FileQueueReceiver(fileQueueReceiveConfiguration, messageDispatcher, loggerService);
+                var receiver = new FileQueueReceiver(fileQueueReceiveConfiguration, messageDispatcher, loggerService, fileSystemService);
                 receiver.Process();
             }
             catch (Exception ex)

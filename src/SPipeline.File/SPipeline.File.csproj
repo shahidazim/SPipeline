@@ -45,6 +45,7 @@
     <Compile Include="FileQueueReceiverConfiguration.cs" />
     <Compile Include="FileQueueSender.cs" />
     <Compile Include="FileQueueSenderConfiguration.cs" />
+    <Compile Include="FileQueueService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,8 +2,6 @@
 {
     public interface IFileSystemService
     {
-        void MoveFile(string sourceFile, string destinationFile);
-
         void DeleteFile(string pathToFile);
 
         string[] GetFiles(string path, string pattern);

@@ -80,12 +80,13 @@
     <Compile Include="Blob\AzureBlobSender.cs" />
     <Compile Include="Blob\AzureBlobSenderConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusBase.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusReceiver.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusReceiverConfiguration.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusSender.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusSenderConfiguration.cs" />
-    <Compile Include="Services\AzureBlobStorageService.cs" />
+    <Compile Include="ServiceBus\AzureServiceBusQueueBase.cs" />
+    <Compile Include="ServiceBus\AzureServiceBusQueueReceiver.cs" />
+    <Compile Include="ServiceBus\AzureServiceBusQueueReceiverConfiguration.cs" />
+    <Compile Include="ServiceBus\AzureServiceBusQueueSender.cs" />
+    <Compile Include="ServiceBus\AzureServiceBusSenderQueueConfiguration.cs" />
+    <Compile Include="Services\AzureBlobService.cs" />
+    <Compile Include="Services\AzureServiceBusQueueService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

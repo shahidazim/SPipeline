@@ -19,23 +19,23 @@
         /// </summary>
         public void Process()
         {
-            var blobPaths = blobStorageService.GetAllBlockBlobs();
+            var references = storageService.GetAllReferences();
 
-            foreach (var blobPath in blobPaths)
+            foreach (var reference in references)
             {
                 try
                 {
-                    var message = GetBody(blobPath);
+                    var receivedMessage = storageService.Download(reference);
+                    var message = GetBody(receivedMessage);
                     var response = _messageDispatcher.Execute(message);
 
                     if (response.HasError)
                     {
                         loggerService?.Error(response.GetFormattedError());
+                        continue;
                     }
-                    else
-                    {
-                        blobStorageService.DeleteBlob(blobPath);
-                    }
+
+                    storageService.Delete(reference);
                 }
                 catch (Exception ex)
                 {
@@ -44,9 +44,9 @@
             }
         }
 
-        private IMessageRequest GetBody(string blobPath)
+        private IMessageRequest GetBody(string message)
         {
-            return (IMessageRequest)SerializerJson.Deserialize(blobStorageService.DownloadContent(blobPath));
+            return (IMessageRequest)SerializerJson.Deserialize(message);
         }
     }
 }

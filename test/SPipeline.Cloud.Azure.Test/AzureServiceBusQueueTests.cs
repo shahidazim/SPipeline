@@ -32,6 +32,7 @@
         [TestCategory("Integration"), TestCategory("AzureQueue")]
         public void AzureServiceBusQueue_SendAndReceiveMessage()
         {
+            var loggerService = new LoggerService("Azure");
             var message = new MyMessageRequest(new PipelineConfiguration
             {
                 ClearErrorsBeforeNextHandler = false,
@@ -41,13 +42,13 @@
                 Name = "Hello World!"
             };
 
-            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(new LoggerService("Generic"));
+            var genericPipeline = new GenericPipeline<MyMessageRequest, MyMessageResponse>(loggerService);
 
-            var connectionString = "<connection-string>";
-            var queueName = "<queue-name>";
+            const string connectionString = "<connection-string>";
+            const string queueName = "<queue-name>";
 
             var azureServiceBusSendConfiguration
-                = new AzureServiceBusSenderConfiguration
+                = new AzureServiceBusSenderQueueConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
@@ -57,7 +58,7 @@
                 };
 
             var azureServiceBusReceiverConfiguration
-                = new AzureServiceBusReceiverConfiguration
+                = new AzureServiceBusQueueReceiverConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
@@ -65,15 +66,14 @@
                     CreateQueue = false
                 };
 
-            var loggerService = new LoggerService("Azure");
             try
             {
-                var sender = new AzureServiceBusSender(azureServiceBusSendConfiguration, loggerService);
+                var sender = new AzureServiceBusQueueSender(azureServiceBusSendConfiguration, loggerService);
                 sender.Send<MyMessageResponse>(message);
                 sender.Send<MyMessageResponse>(message);
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-                var receiver = new AzureServiceBusReceiver(azureServiceBusReceiverConfiguration, messageDispatcher, loggerService);
+                var receiver = new AzureServiceBusQueueReceiver(azureServiceBusReceiverConfiguration, messageDispatcher, loggerService);
                 receiver.Process();
             }
             catch (Exception ex)
