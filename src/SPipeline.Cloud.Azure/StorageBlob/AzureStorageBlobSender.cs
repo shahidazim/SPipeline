@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure.Blob
+﻿namespace SPipeline.Cloud.Azure.StorageBlob
 {
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
@@ -7,10 +7,16 @@
     using SPipeline.Core.Util;
     using System;
 
-    public class AzureBlobSender : AzureBlobBase, IMessageSender
+    public class AzureStorageBlobSender : AzureStorageBlobBase, IMessageSender
     {
-        public AzureBlobSender(AzureBlobSenderConfiguration configuration, ILoggerService loggerService)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
+        public AzureStorageBlobSender(
+            AzureStorageBlobSenderConfiguration configuration,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ConnectionString,
+                  configuration.QueueName,
+                  configuration.CreateQueue,
+                  loggerService)
         {
         }
 

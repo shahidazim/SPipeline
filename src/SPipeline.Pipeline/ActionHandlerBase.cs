@@ -24,7 +24,9 @@
         /// </summary>
         /// <param name="requestTranslator">The request translator.</param>
         /// <param name="responseTranslator">The response translator.</param>
-        protected ActionHandlerBase(Func<TTranslateRequest, TActionRequest> requestTranslator, Func<TActionResponse, TTranslateResponse> responseTranslator)
+        protected ActionHandlerBase(
+            Func<TTranslateRequest, TActionRequest> requestTranslator,
+            Func<TActionResponse, TTranslateResponse> responseTranslator)
         {
             RequestTranslator = requestTranslator;
             ResponseTranslator = responseTranslator;

@@ -1,17 +1,15 @@
-﻿namespace SPipeline.Cloud.Azure.ServiceBus
+﻿namespace SPipeline.Cloud.Azure.ServiceBusQueue
 {
-    using System;
-
     /// <summary>
-    /// The Azure Service Bus Queue Sender Configuration
+    /// The Azure Service Bus Queue Receiver Configuration
     /// </summary>
-    public class AzureServiceBusSenderQueueConfiguration
+    public class AzureServiceBusQueueReceiverConfiguration
     {
         /// <summary>
-        /// Gets or sets the Azure Service Bus connection string.
+        /// Gets or sets the connection string.
         /// </summary>
         /// <value>
-        /// The Azure Service Bus connection string.
+        /// The connection string.
         /// </value>
         public string ConnectionString { get; set; }
 
@@ -24,20 +22,12 @@
         public string QueueName { get; set; }
 
         /// <summary>
-        /// Gets or sets the message time to live.
+        /// Gets or sets the maximum number of messages to receive from queue.
         /// </summary>
         /// <value>
-        /// The message time to live.
+        /// The maximum number of messages to receive from queue.
         /// </value>
-        public TimeSpan MessageTimeToLive { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum size in megabytes.
-        /// </summary>
-        /// <value>
-        /// The maximum size in megabytes.
-        /// </value>
-        public int MaxSizeInMegabytes { get; set; }
+        public int MaxNumberOfMessages { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [create queue].

@@ -9,8 +9,16 @@
 
     public class AWSS3Sender : AWSS3Base, IMessageSender
     {
-        public AWSS3Sender(AWSS3SenderConfiguration configuration, ILoggerService loggerService)
-            : base(configuration.ServiceUrl, configuration.BucketName, configuration.AccessKey, configuration.SecretKey, configuration.CreateBucket, loggerService)
+        public AWSS3Sender(
+            AWSS3SenderConfiguration configuration,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ServiceUrl,
+                  configuration.BucketName,
+                  configuration.AccessKey,
+                  configuration.SecretKey,
+                  configuration.CreateBucket,
+                  loggerService)
         {
         }
 

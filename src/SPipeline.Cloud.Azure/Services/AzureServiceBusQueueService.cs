@@ -12,18 +12,27 @@
     {
         private const int DefaultMaxSizeInMegabytes = 1024;
 
-        protected QueueClient queueClient;
+        private readonly QueueClient _queueClient;
 
-        public AzureServiceBusQueueService(string connectionString, string queueName, TimeSpan? messageTimeToLive = null, int maxSizeInMegabytes = 0, bool createQueue = false)
+        public AzureServiceBusQueueService(
+            string connectionString,
+            string queueName,
+            bool createQueue = false,
+            TimeSpan? messageTimeToLive = null,
+            int maxSizeInMegabytes = 0)
         {
             if (createQueue)
             {
                 CreateQueue(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes);
             }
-            queueClient = QueueClient.CreateFromConnectionString(connectionString, queueName);
+            _queueClient = QueueClient.CreateFromConnectionString(connectionString, queueName);
         }
 
-        private void CreateQueue(string connectionString, string queueName, TimeSpan? messageTimeToLive, int maxSizeInMegabytes)
+        private void CreateQueue(
+            string connectionString,
+            string queueName,
+            TimeSpan? messageTimeToLive,
+            int maxSizeInMegabytes)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -47,7 +56,7 @@
         {
             var payloadStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
             var brokeredMessage = new BrokeredMessage(payloadStream, true);
-            queueClient.Send(brokeredMessage);
+            _queueClient.Send(brokeredMessage);
         }
 
         public IEnumerable<string> Receive()
@@ -55,7 +64,7 @@
             var messages = new List<string>();
             while (true)
             {
-                var receivedMessage = queueClient.ReceiveAsync().Result;
+                var receivedMessage = _queueClient.ReceiveAsync().Result;
 
                 if (receivedMessage == null)
                 {

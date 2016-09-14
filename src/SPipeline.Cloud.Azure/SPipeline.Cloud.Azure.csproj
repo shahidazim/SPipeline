@@ -74,19 +74,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blob\AzureBlobBase.cs" />
-    <Compile Include="Blob\AzureBlobReceiver.cs" />
-    <Compile Include="Blob\AzureBlobReceiverConfiguration.cs" />
-    <Compile Include="Blob\AzureBlobSender.cs" />
-    <Compile Include="Blob\AzureBlobSenderConfiguration.cs" />
+    <Compile Include="StorageBlob\AzureStorageBlobBase.cs" />
+    <Compile Include="StorageBlob\AzureStorageBlobReceiver.cs" />
+    <Compile Include="StorageBlob\AzureStorageBlobReceiverConfiguration.cs" />
+    <Compile Include="StorageBlob\AzureStorageBlobSender.cs" />
+    <Compile Include="StorageBlob\AzureStorageBlobSenderConfiguration.cs" />
+    <Compile Include="StorageQueue\AzureStorageQueueBase.cs" />
+    <Compile Include="StorageQueue\AzureStorageQueueReceiver.cs" />
+    <Compile Include="StorageQueue\AzureStorageQueueReceiverConfiguration.cs" />
+    <Compile Include="StorageQueue\AzureStorageQueueSender.cs" />
+    <Compile Include="StorageQueue\AzureStorageQueueSenderConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusQueueBase.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusQueueReceiver.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusQueueReceiverConfiguration.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusQueueSender.cs" />
-    <Compile Include="ServiceBus\AzureServiceBusSenderQueueConfiguration.cs" />
-    <Compile Include="Services\AzureBlobService.cs" />
+    <Compile Include="ServiceBusQueue\AzureServiceBusQueueBase.cs" />
+    <Compile Include="ServiceBusQueue\AzureServiceBusQueueReceiver.cs" />
+    <Compile Include="ServiceBusQueue\AzureServiceBusQueueReceiverConfiguration.cs" />
+    <Compile Include="ServiceBusQueue\AzureServiceBusQueueSender.cs" />
+    <Compile Include="ServiceBusQueue\AzureServiceBusQueueSenderConfiguration.cs" />
+    <Compile Include="Services\AzureStorageBlobService.cs" />
     <Compile Include="Services\AzureServiceBusQueueService.cs" />
+    <Compile Include="Services\AzureStorageQueueService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -98,6 +104,7 @@
       <Name>SPipeline.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

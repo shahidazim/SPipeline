@@ -16,7 +16,14 @@
 
         protected AmazonSQSClient queueClient;
 
-        public AWSSQSService(string serviceUrl, string queueName, string accountId, string accessKey, string secretKey, bool createQueue, int maxNumberOfMessages)
+        public AWSSQSService(
+            string serviceUrl,
+            string queueName,
+            string accountId,
+            string accessKey,
+            string secretKey,
+            bool createQueue,
+            int maxNumberOfMessages)
         {
             _serviceUrl = serviceUrl;
             _accountId = accountId;

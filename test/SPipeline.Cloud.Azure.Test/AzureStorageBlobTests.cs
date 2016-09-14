@@ -1,19 +1,19 @@
 ﻿namespace SPipeline.Cloud.Azure.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using SPipeline.Cloud.Azure.Blob;
+    using SPipeline.Cloud.Azure.StorageBlob;
     using SPipeline.Core.Models;
     using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
     using System;
 
     [TestClass]
-    public class AzureBlobQueueTests
+    public class AzureStorageBlobTests
     {
         [TestMethod]
         [Ignore]
         [TestCategory("Integration"), TestCategory("AzureQueue")]
-        public void AzureBlobQueue_SendAndReceiveMessage()
+        public void AzureStorageBlobQueue_SendAndReceiveMessage()
         {
             var loggerService = new LoggerService("Azure");
 
@@ -32,7 +32,7 @@
             const string queueName = "<queue-name>";
 
             var azureBlobSendConfiguration
-                = new AzureBlobSenderConfiguration
+                = new AzureStorageBlobSenderConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
@@ -40,7 +40,7 @@
                 };
 
             var azureBlobReceiverConfiguration
-                = new AzureBlobReceiverConfiguration
+                = new AzureStorageBlobReceiverConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
@@ -49,12 +49,12 @@
 
             try
             {
-                var sender = new AzureBlobSender(azureBlobSendConfiguration, loggerService);
+                var sender = new AzureStorageBlobSender(azureBlobSendConfiguration, loggerService);
                 sender.Send<MyMessageResponse>(message);
                 sender.Send<MyMessageResponse>(message);
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-                var receiver = new AzureBlobReceiver(azureBlobReceiverConfiguration, messageDispatcher, loggerService);
+                var receiver = new AzureStorageBlobReceiver(azureBlobReceiverConfiguration, messageDispatcher, loggerService);
                 receiver.Process();
             }
             catch (Exception ex)

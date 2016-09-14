@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure.ServiceBus
+﻿namespace SPipeline.Cloud.Azure.StorageQueue
 {
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
@@ -9,18 +9,27 @@
     /// The Azure Service Bus Queue Receiver to receive and deserialize the messages
     /// </summary>
     /// <seealso cref="Core.Interfaces.Pipeline.IMessageReceiver" />
-    public class AzureServiceBusQueueReceiver : AzureServiceBusQueueBase, IMessageReceiver
+    public class AzureStorageQueueReceiver : AzureStorageQueueBase, IMessageReceiver
     {
         private readonly IMessageDispatcher _messageDispatcher;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusQueueReceiver" /> class.
+        /// Initializes a new instance of the <see cref="AzureStorageQueueReceiver" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="messageDispatcher">The message dispatcher.</param>
         /// <param name="loggerService">The logger service.</param>
-        public AzureServiceBusQueueReceiver(AzureServiceBusQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
+        public AzureStorageQueueReceiver(
+            AzureStorageQueueReceiverConfiguration configuration,
+            IMessageDispatcher messageDispatcher,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ConnectionString,
+                  configuration.QueueName,
+                  configuration.CreateQueue,
+                  null,
+                  configuration.MaxNumberOfMessages,
+                  loggerService)
         {
             _messageDispatcher = messageDispatcher;
         }

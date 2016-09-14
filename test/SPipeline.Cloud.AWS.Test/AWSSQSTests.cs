@@ -7,23 +7,6 @@
     using SPipeline.Pipeline;
     using System;
 
-    public class MyMessageRequest : MessageRequestBase
-    {
-        public MyMessageRequest(PipelineConfiguration configuration) : base(configuration)
-        {
-        }
-
-        public string Name { get; set; }
-    }
-
-    public class MyMessageResponse : MessageResponseBase
-    {
-    }
-
-    public class MyConfiguration
-    {
-    }
-
     [TestClass]
     public class AWSSQSTests
     {

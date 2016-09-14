@@ -1,27 +1,29 @@
-﻿namespace SPipeline.Cloud.AWS.SQS
+﻿namespace SPipeline.Cloud.Azure.ServiceBusQueue
 {
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using System;
 
-    public class AWSSQSReceiver : AWSSQSBase, IMessageReceiver
+    /// <summary>
+    /// The Azure Service Bus Queue Receiver to receive and deserialize the messages
+    /// </summary>
+    /// <seealso cref="Core.Interfaces.Pipeline.IMessageReceiver" />
+    public class AzureServiceBusQueueReceiver : AzureServiceBusQueueBase, IMessageReceiver
     {
         private readonly IMessageDispatcher _messageDispatcher;
 
-        public AWSSQSReceiver(
-            AWSSQSReceiverConfiguration configuration,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureServiceBusQueueReceiver" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="messageDispatcher">The message dispatcher.</param>
+        /// <param name="loggerService">The logger service.</param>
+        public AzureServiceBusQueueReceiver(
+            AzureServiceBusQueueReceiverConfiguration configuration,
             IMessageDispatcher messageDispatcher,
             ILoggerService loggerService)
-            : base(
-                  configuration.ServiceUrl,
-                  configuration.QueueName,
-                  configuration.AccountId,
-                  configuration.AccessKey,
-                  configuration.SecretKey,
-                  configuration.CreateQueue,
-                  loggerService,
-                  configuration.MaxNumberOfMessages)
+            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
         {
             _messageDispatcher = messageDispatcher;
         }

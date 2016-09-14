@@ -8,8 +8,17 @@
 
     public class AWSSQSSender : AWSSQSBase, IMessageSender
     {
-        public AWSSQSSender(AWSSQSSenderConfiguration configuration, ILoggerService loggerService)
-            : base(configuration.ServiceUrl, configuration.QueueName, configuration.AccountId, configuration.AccessKey, configuration.SecretKey, configuration.CreateQueue, loggerService)
+        public AWSSQSSender(
+            AWSSQSSenderConfiguration configuration,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ServiceUrl,
+                  configuration.QueueName,
+                  configuration.AccountId,
+                  configuration.AccessKey,
+                  configuration.SecretKey,
+                  configuration.CreateQueue,
+                  loggerService)
         {
         }
 

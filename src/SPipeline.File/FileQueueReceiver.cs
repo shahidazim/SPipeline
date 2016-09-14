@@ -10,8 +10,18 @@
     {
         private readonly IMessageDispatcher _messageDispatcher;
 
-        public FileQueueReceiver(FileQueueReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService, IFileSystemService fileSystemService)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, configuration.FullPath, loggerService, fileSystemService)
+        public FileQueueReceiver(
+            FileQueueReceiverConfiguration configuration,
+            IMessageDispatcher messageDispatcher,
+            ILoggerService loggerService,
+            IFileSystemService fileSystemService)
+            : base(
+                  configuration.BasePath,
+                  configuration.QueueName,
+                  configuration.CreateQueue,
+                  configuration.FullPath,
+                  loggerService,
+                  fileSystemService)
         {
             _messageDispatcher = messageDispatcher;
         }

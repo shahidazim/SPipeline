@@ -1,6 +1,6 @@
-﻿namespace SPipeline.Cloud.Azure.Blob
+﻿namespace SPipeline.Cloud.Azure.StorageBlob
 {
-    public class AzureBlobSenderConfiguration
+    public class AzureStorageBlobSenderConfiguration
     {
         public string ConnectionString { get; set; }
 

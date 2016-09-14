@@ -11,7 +11,12 @@
         private readonly IFileSystemService _fileSystemService;
         private readonly string _queueFullPath;
 
-        public FileQueueService(string basePath, string queueName, bool createQueue, string queueFullPath, IFileSystemService fileSystemService)
+        public FileQueueService(
+            string basePath,
+            string queueName,
+            bool createQueue,
+            string queueFullPath,
+            IFileSystemService fileSystemService)
         {
             _fileSystemService = fileSystemService;
             _queueFullPath = queueFullPath;

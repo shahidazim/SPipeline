@@ -1,8 +1,8 @@
-﻿namespace SPipeline.Cloud.Azure.ServiceBus
+﻿namespace SPipeline.Cloud.Azure.ServiceBusQueue
 {
     using SPipeline.Cloud.Azure.Services;
-    using SPipeline.Core.Interfaces.Services;
     using SPipeline.Core.DebugHelper;
+    using SPipeline.Core.Interfaces.Services;
     using System;
 
     /// <summary>
@@ -20,9 +20,13 @@
         /// <param name="queueName">Name of the queue.</param>
         /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
         /// <param name="loggerService">The logger service.</param>
-        protected AzureServiceBusQueueBase(string connectionString, string queueName, bool createQueue, ILoggerService loggerService)
+        protected AzureServiceBusQueueBase(
+            string connectionString,
+            string queueName,
+            bool createQueue,
+            ILoggerService loggerService)
         {
-            Initialize(connectionString, queueName, loggerService, null, 0, createQueue);
+            Initialize(connectionString, queueName, loggerService, createQueue);
         }
 
         /// <summary>
@@ -30,12 +34,18 @@
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <param name="queueName">Name of the queue.</param>
+        /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
         /// <param name="messageTimeToLive">The message time to live.</param>
         /// <param name="maxSizeInMegabytes">The maximum size in megabytes.</param>
-        /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
-        protected AzureServiceBusQueueBase(string connectionString, string queueName, TimeSpan messageTimeToLive, int maxSizeInMegabytes, bool createQueue, ILoggerService loggerService)
+        protected AzureServiceBusQueueBase(
+            string connectionString,
+            string queueName,
+            bool createQueue,
+            TimeSpan messageTimeToLive,
+            int maxSizeInMegabytes,
+            ILoggerService loggerService)
         {
-            Initialize(connectionString, queueName, loggerService, messageTimeToLive, maxSizeInMegabytes, createQueue);
+            Initialize(connectionString, queueName, loggerService, createQueue, messageTimeToLive, maxSizeInMegabytes);
         }
 
         /// <summary>
@@ -43,14 +53,20 @@
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <param name="queueName">Name of the queue.</param>
-        /// <param name="loggerService">The logger service.</param>
+        /// <param name="logService">The logger service.</param>
+        /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
         /// <param name="messageTimeToLive">The message time to live.</param>
         /// <param name="maxSizeInMegabytes">The maximum size in megabytes.</param>
-        /// <param name="createQueue">if set to <c>true</c> [create queue].</param>
-        private void Initialize(string connectionString, string queueName, ILoggerService loggerService, TimeSpan? messageTimeToLive = null, int maxSizeInMegabytes = 0, bool createQueue = false)
+        private void Initialize(
+            string connectionString,
+            string queueName,
+            ILoggerService logService,
+            bool createQueue = false,
+            TimeSpan? messageTimeToLive = null,
+            int maxSizeInMegabytes = 0)
         {
-            this.loggerService = loggerService;
-            queueService = new AzureServiceBusQueueService(connectionString, queueName, messageTimeToLive, maxSizeInMegabytes, createQueue);
+            this.loggerService = logService;
+            queueService = new AzureServiceBusQueueService(connectionString, queueName, createQueue, messageTimeToLive, maxSizeInMegabytes);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SPipeline.Cloud.Azure.ServiceBus
+﻿namespace SPipeline.Cloud.Azure.StorageQueue
 {
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
@@ -10,19 +10,21 @@
     /// The Azure Service Bus Queue Sender to send messages
     /// </summary>
     /// <seealso cref="Core.Interfaces.Pipeline.IMessageSender" />
-    public class AzureServiceBusQueueSender : AzureServiceBusQueueBase, IMessageSender
+    public class AzureStorageQueueSender : AzureStorageQueueBase, IMessageSender
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusQueueSender" /> class.
+        /// Initializes a new instance of the <see cref="AzureStorageQueueSender" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerService">The logger service.</param>
-        public AzureServiceBusQueueSender(AzureServiceBusSenderQueueConfiguration configuration, ILoggerService loggerService)
+        public AzureStorageQueueSender(
+            AzureStorageQueueSenderConfiguration configuration,
+            ILoggerService loggerService)
             : base(configuration.ConnectionString,
                    configuration.QueueName,
+                   configuration.CreateQueue,
                    configuration.MessageTimeToLive,
                    configuration.MaxSizeInMegabytes,
-                   configuration.CreateQueue,
                    loggerService)
         {
         }

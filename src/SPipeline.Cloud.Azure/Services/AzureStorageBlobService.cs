@@ -6,29 +6,23 @@
     using System;
     using System.Collections.Generic;
 
-    public class AzureBlobService : IStorageService
+    public class AzureStorageBlobService : IStorageService
     {
-        private CloudBlobContainer _blobContainer;
+        private readonly CloudBlobContainer _blobContainer;
 
-        public AzureBlobService(string connectionString, string containerName, bool createQueue)
+        public AzureStorageBlobService(string connectionString, string containerName, bool createQueue)
         {
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
+            _blobContainer = blobClient.GetContainerReference(containerName);
             if (createQueue)
             {
                 CreateBlobContainer(blobClient, containerName);
             }
-            _blobContainer = blobClient.GetContainerReference(containerName);
         }
 
         private void CreateBlobContainer(CloudBlobClient blobClient, string containerName)
         {
-            if (_blobContainer != null)
-            {
-                return;
-            }
-
-            _blobContainer = blobClient.GetContainerReference(containerName);
             _blobContainer.CreateIfNotExists(BlobContainerPublicAccessType.Blob);
         }
 

@@ -1,16 +1,23 @@
-﻿namespace SPipeline.Cloud.Azure.Blob
+﻿namespace SPipeline.Cloud.Azure.StorageBlob
 {
     using SPipeline.Core.DebugHelper;
     using SPipeline.Core.Interfaces.Pipeline;
     using SPipeline.Core.Serializers;
     using System;
 
-    public class AzureBlobReceiver : AzureBlobBase, IMessageReceiver
+    public class AzureStorageBlobReceiver : AzureStorageBlobBase, IMessageReceiver
     {
         private readonly IMessageDispatcher _messageDispatcher;
 
-        public AzureBlobReceiver(AzureBlobReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : base(configuration.ConnectionString, configuration.QueueName, configuration.CreateQueue, loggerService)
+        public AzureStorageBlobReceiver(
+            AzureStorageBlobReceiverConfiguration configuration,
+            IMessageDispatcher messageDispatcher,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ConnectionString,
+                  configuration.QueueName,
+                  configuration.CreateQueue,
+                  loggerService)
         {
             _messageDispatcher = messageDispatcher;
         }

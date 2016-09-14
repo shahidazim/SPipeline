@@ -1,7 +1,5 @@
 ﻿namespace SPipeline.Core.Interfaces.Pipeline
 {
-    using System;
-
     /// <summary>
     /// Represents the message receiver
     /// </summary>

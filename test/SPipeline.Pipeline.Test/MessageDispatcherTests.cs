@@ -1,10 +1,9 @@
-﻿using SPipeline.Logger.NLog;
-
-namespace SPipeline.Pipeline.Test
+﻿namespace SPipeline.Pipeline.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using SPipeline.Core.Exceptions;
     using SPipeline.Core.Models;
+    using SPipeline.Logger.NLog;
 
     class DummyMessage1 : MessageRequestBase
     {

@@ -8,7 +8,13 @@
         protected readonly IStorageService fileStorageService;
         protected readonly ILoggerService loggerService;
 
-        public FileQueueBase(string basePath, string queueName, bool createQueue, string queueFullPath, ILoggerService loggerService, IFileSystemService fileSystemService)
+        public FileQueueBase(
+            string basePath,
+            string queueName,
+            bool createQueue,
+            string queueFullPath,
+            ILoggerService loggerService,
+            IFileSystemService fileSystemService)
         {
             this.loggerService = loggerService;
             fileStorageService = new FileQueueService(basePath, queueName, createQueue, queueFullPath, fileSystemService);

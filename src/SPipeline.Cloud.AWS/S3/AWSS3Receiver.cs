@@ -9,8 +9,17 @@
     {
         private readonly IMessageDispatcher _messageDispatcher;
 
-        public AWSS3Receiver(AWSS3ReceiverConfiguration configuration, IMessageDispatcher messageDispatcher, ILoggerService loggerService)
-            : base(configuration.ServiceUrl, configuration.BucketName, configuration.AccessKey, configuration.SecretKey, configuration.CreateBucket, loggerService)
+        public AWSS3Receiver(
+            AWSS3ReceiverConfiguration configuration,
+            IMessageDispatcher messageDispatcher,
+            ILoggerService loggerService)
+            : base(
+                  configuration.ServiceUrl,
+                  configuration.BucketName,
+                  configuration.AccessKey,
+                  configuration.SecretKey,
+                  configuration.CreateBucket,
+                  loggerService)
         {
             _messageDispatcher = messageDispatcher;
         }

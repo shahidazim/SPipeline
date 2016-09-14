@@ -1,19 +1,19 @@
 ﻿namespace SPipeline.Cloud.Azure.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using SPipeline.Cloud.Azure.ServiceBusQueue;
+    using SPipeline.Cloud.Azure.StorageQueue;
     using SPipeline.Core.Models;
     using SPipeline.Logger.NLog;
     using SPipeline.Pipeline;
     using System;
 
     [TestClass]
-    public class AzureServiceBusQueueTests
+    public class AzureStorageQueueTests
     {
         [TestMethod]
         [Ignore]
         [TestCategory("Integration"), TestCategory("AzureQueue")]
-        public void AzureServiceBusQueue_SendAndReceiveMessage()
+        public void AzureStorageQueue_SendAndReceiveMessage()
         {
             var loggerService = new LoggerService("Azure");
             var message = new MyMessageRequest(new PipelineConfiguration
@@ -30,8 +30,8 @@
             const string connectionString = "<connection-string>";
             const string queueName = "<queue-name>";
 
-            var azureServiceBusSendConfiguration
-                = new AzureServiceBusQueueSenderConfiguration
+            var azureStorageSendConfiguration
+                = new AzureStorageQueueSenderConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
@@ -40,23 +40,23 @@
                     CreateQueue = true
                 };
 
-            var azureServiceBusReceiverConfiguration
-                = new AzureServiceBusQueueReceiverConfiguration
+            var azureStorageReceiverConfiguration
+                = new AzureStorageQueueReceiverConfiguration
                 {
                     ConnectionString = connectionString,
                     QueueName = queueName,
-                    MaxNumberOfMessages = 10,
-                    CreateQueue = false
+                    CreateQueue = false,
+                    MaxNumberOfMessages = 10
                 };
 
             try
             {
-                var sender = new AzureServiceBusQueueSender(azureServiceBusSendConfiguration, loggerService);
+                var sender = new AzureStorageQueueSender(azureStorageSendConfiguration, loggerService);
                 sender.Send<MyMessageResponse>(message);
                 sender.Send<MyMessageResponse>(message);
 
                 var messageDispatcher = new MessageDispatcher().RegisterPipeline(genericPipeline);
-                var receiver = new AzureServiceBusQueueReceiver(azureServiceBusReceiverConfiguration, messageDispatcher, loggerService);
+                var receiver = new AzureStorageQueueReceiver(azureStorageReceiverConfiguration, messageDispatcher, loggerService);
                 receiver.Process();
             }
             catch (Exception ex)

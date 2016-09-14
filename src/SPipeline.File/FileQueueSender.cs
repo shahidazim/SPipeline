@@ -10,8 +10,17 @@
 
     public class FileQueueSender : FileQueueBase, IMessageSender
     {
-        public FileQueueSender(FileQueueSenderConfiguration configuration, ILoggerService loggerService, IFileSystemService fileSystemService)
-            : base(configuration.BasePath, configuration.QueueName, configuration.CreateQueue, configuration.FullPath, loggerService, fileSystemService)
+        public FileQueueSender(
+            FileQueueSenderConfiguration configuration,
+            ILoggerService loggerService,
+            IFileSystemService fileSystemService)
+            : base(
+                  configuration.BasePath,
+                  configuration.QueueName,
+                  configuration.CreateQueue,
+                  configuration.FullPath,
+                  loggerService,
+                  fileSystemService)
         {
         }
 

@@ -50,8 +50,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AzureBlobQueueTests.cs" />
+    <Compile Include="AzureStorageBlobTests.cs" />
     <Compile Include="AzureServiceBusQueueTests.cs" />
+    <Compile Include="AzureStorageQueueTests.cs" />
+    <Compile Include="MyMessageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
